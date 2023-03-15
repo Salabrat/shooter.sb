@@ -22,6 +22,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 		TSubclassOf<ASBBaseWeapon> WeaponClass;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+
+		FName WeaponAttachPointName = "WeaponSocket";
 
 	virtual void BeginPlay() override;
 

@@ -24,6 +24,8 @@ void ASBBaseWeapon::BeginPlay()
 
 void ASBBaseWeapon::Fire()
 {
+	UE_LOG(LogBaseWeapon, Display, TEXT("Fire!"));
+
 	MakeShot();
 }
 

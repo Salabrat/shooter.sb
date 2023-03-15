@@ -23,7 +23,7 @@ protected:
 		USkeletalMeshComponent* WeaponMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		FName MuzzleSocketName = "MuzzleSocketName";
+		FName MuzzleSocketName = "MuzzleSocket";
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		float TraceMaxDistance = 1500.0f;

@@ -16,7 +16,8 @@ class SBSHOOTER_API USBWeaponComponent : public UActorComponent
 public:	
 	USBWeaponComponent();
 
-	void Fire();	
+	void StartFire();	
+	void StopFire();	
 
 protected:
 

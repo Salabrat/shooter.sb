@@ -7,6 +7,7 @@
 #include "SBProjectile.generated.h"
 
 class USphereComponent;
+class UProjectileMovementComponent;
 
 UCLASS()
 class SBSHOOTER_API ASBProjectile : public AActor
@@ -16,11 +17,17 @@ class SBSHOOTER_API ASBProjectile : public AActor
 public:	
 	ASBProjectile();
 
-protected:
-	virtual void BeginPlay() override;
+	void SetShotDirection(const FVector& Direction) { ShotDirection = Direction; }
 
+protected:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 		USphereComponent* CollisionComponent;
 
+	UPROPERTY(VisibleAnywhere, Category = "Weapon")
+		UProjectileMovementComponent* MovementComponent;
 
+	virtual void BeginPlay() override;
+
+private:
+	FVector ShotDirection;
 };

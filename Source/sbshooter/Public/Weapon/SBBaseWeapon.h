@@ -31,4 +31,11 @@ protected:
 	virtual void BeginPlay() override;
 
 	void MakeShot();
+
+	APlayerController* GetPLayerController() const;
+	bool GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const;
+	FVector GetMuzzleWorldLocation() const;
+	bool GetTraceData(FVector& TraceStart, FVector& TraceEnd) const;
+	void MakeHit(FHitResult& HitResult, const FVector& TraceStart, const FVector& TraceEnd);
+
 };

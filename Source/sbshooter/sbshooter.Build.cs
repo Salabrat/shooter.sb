@@ -17,7 +17,8 @@ public class sbshooter : ModuleRules
 			"sbshooter/Public/Components",
 			"sbshooter/Public/Dev",
 			"sbshooter/Public/Weapon",
-			"sbshooter/Public/UI"
+			"sbshooter/Public/UI",
+			"sbshooter/Public/Animations"
 		});
 
 		// Uncomment if you are using Slate UI

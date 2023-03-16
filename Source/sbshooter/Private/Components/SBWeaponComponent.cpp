@@ -30,6 +30,8 @@ void USBWeaponComponent::SpawnWeapon()
 
 	FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
 	CurrentWeapon->AttachToComponent(Character->GetMesh(),AttachmentRules, WeaponAttachPointName);
+	CurrentWeapon -> SetOwner(Character);
+	
 
 	/*const auto Weapon = GetWorld()->SpawnActor<ASBBaseWeapon>(WeaponClass);
 	if (Weapon)

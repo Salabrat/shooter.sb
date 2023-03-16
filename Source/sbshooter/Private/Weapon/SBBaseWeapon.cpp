@@ -41,6 +41,7 @@ void ASBBaseWeapon::MakeShot()
 
 	if (HitResult.bBlockingHit)
 	{
+		MakeDamage(HitResult);
 		DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), HitResult.ImpactPoint, FColor::Red, false, 3.0f, 0, 3.0f);
 		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Green, false, 5.0f);
 	}
@@ -93,4 +94,12 @@ void ASBBaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, co
 	CollisionParams.bReturnPhysicalMaterial = true;
 
 	GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility, CollisionParams);
+}
+
+void ASBBaseWeapon::MakeDamage(const FHitResult& HitResult) 
+{
+	const auto DamagedActor = HitResult.GetActor();
+	if (!DamagedActor) return;
+
+	DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPLayerController(), this);
 }

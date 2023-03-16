@@ -8,6 +8,7 @@
 #include "Components/SBHealthComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "Components/SBWeaponComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/Controller.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseCharacter, All, All);
@@ -125,7 +126,7 @@ void ASBBaseCharacter::OnDeath()
 	{
 		Controller->ChangeState(NAME_Spectating);
 	}
-
+	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 }
 
 void ASBBaseCharacter::OnGroundLanded(const FHitResult& Hit)

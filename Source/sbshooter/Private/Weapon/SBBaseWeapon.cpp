@@ -21,7 +21,9 @@ ASBBaseWeapon::ASBBaseWeapon()
 void ASBBaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
+	
 	check(WeaponMesh);
+	CurrentAmmo = DefaultAmmo;
 }
 
 void ASBBaseWeapon::StartFire()
@@ -79,4 +81,45 @@ void ASBBaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, co
 	CollisionParams.bReturnPhysicalMaterial = true;
 
 	GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility, CollisionParams);
+}
+
+void ASBBaseWeapon::DecreaseAmmo() 
+{
+	CurrentAmmo.Bullets--;
+	LogAmmo();
+	if (IsClipEmpty() && !IsAmmoEmpty())
+	{
+		ChangeClip();
+	}
+}
+bool ASBBaseWeapon::IsAmmoEmpty() const 
+{
+	return !CurrentAmmo.Infinite && CurrentAmmo.Clips == 0 && IsClipEmpty();
+}
+bool ASBBaseWeapon::IsClipEmpty() const 
+{
+	return CurrentAmmo.Bullets == 0;
+}
+
+void ASBBaseWeapon::ChangeClip() 
+{
+	CurrentAmmo.Bullets = DefaultAmmo.Bullets;
+	if (!CurrentAmmo.Infinite)
+	{
+		/*if (CurrentAmmo.Clips == 0)
+		{
+			UE_LOG(LogBaseWeapon, Display, TEXT("nomoreclipsSBSB"));
+			return;
+		}*/
+		CurrentAmmo.Clips--;
+	}
+
+	UE_LOG(LogBaseWeapon, Display, TEXT("ReloadClipsSBSB"));
+}
+
+void ASBBaseWeapon::LogAmmo() 
+{
+	FString AmmoInfo = "Ammo: " + FString::FromInt(CurrentAmmo.Bullets) + " / ";
+	AmmoInfo += CurrentAmmo.Infinite ? "Infinite" : FString::FromInt(CurrentAmmo.Clips);
+	UE_LOG(LogBaseWeapon, Display, TEXT("%s"), *AmmoInfo);
 }

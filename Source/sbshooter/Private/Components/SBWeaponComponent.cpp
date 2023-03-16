@@ -82,18 +82,20 @@ void USBWeaponComponent::EquipWeapon(int32 WeaponIndex)
 	}
 
 	CurrentWeapon = Weapons[WeaponIndex];
+	
 	/*CurrentReloadAnimMontage = WeaponData[WeaponIndex].ReloadAnimMontage;
 	const auto CurrentWeaponData = WeaponData.FindByPredicate([&](const FWeaponData& Data) {
 		return Data.WeaponClass == CurrentWeapon->GetClass();
 		});
 	CurrentReloadAnimMontage = CurrentWeaponData ? CurrentWeaponData->ReloadAnimMontage : nullptr;*/
 	AttachWeaponToSocket(CurrentWeapon, Character->GetMesh(), WeaponEquipSocketName);
+	EquipAnimInProgress = true;
 	PlayAnimMontage(EquipAnimMontage);
 }
 
 void USBWeaponComponent::StartFire()
 {
-	if (!CurrentWeapon) return;
+	if (!CanFire()) return;
 	CurrentWeapon->StartFire();
 }
 
@@ -106,6 +108,7 @@ void USBWeaponComponent::StopFire()
 
 void USBWeaponComponent::NextWeapon()
 {
+	if (!CanEquip()) return;
 	CurrentWeaponIndex = (CurrentWeaponIndex + 1) % Weapons.Num();
 	EquipWeapon(CurrentWeaponIndex);
 }
@@ -133,12 +136,19 @@ void USBWeaponComponent::InitAnimations()
 		}
 	}
 }
-void USBWeaponComponent::OnEquipFinished(USkeletalMeshComponent* MeshComponent) 
+void USBWeaponComponent::OnEquipFinished(USkeletalMeshComponent* MeshComp) 
 {
 	ACharacter* Character = Cast<ACharacter>(GetOwner());
-	if (!Character) return;
-	if (Character->GetMesh() == MeshComponent)
-	{
-		UE_LOG(LogWeaponComponent, Display, TEXT("FINISHED_STOP"));
-	}
+	if (!Character || MeshComp != Character->GetMesh()) return;
+		EquipAnimInProgress = false;
+
+}
+
+bool USBWeaponComponent::CanFire() const
+{
+	return CurrentWeapon && !EquipAnimInProgress;
+}
+bool USBWeaponComponent::CanEquip() const
+{
+	return !EquipAnimInProgress;
 }

@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "SBBaseWeapon.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnClipEptySignature);
+
 class USkeletalMeshComponent;
 
 USTRUCT(BlueprintType)
@@ -31,9 +33,14 @@ class SBSHOOTER_API ASBBaseWeapon : public AActor
 public:	
 	ASBBaseWeapon();
 
+	FOnClipEptySignature OnClipEmpty;
+
 	virtual void StartFire();
 	virtual void StopFire();
 
+	void ChangeClip();
+	bool CanReload() const;
+		
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 		USkeletalMeshComponent* WeaponMesh;
@@ -59,7 +66,6 @@ protected:
 	void DecreaseAmmo();
 	bool IsAmmoEmpty() const;
 	bool IsClipEmpty() const;
-	void ChangeClip();
 	void LogAmmo();
 
 private:

@@ -85,11 +85,17 @@ void ASBBaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, co
 
 void ASBBaseWeapon::DecreaseAmmo() 
 {
+	if (CurrentAmmo.Bullets == 0)
+	{
+		UE_LOG(LogBaseWeapon, Warning, TEXT("Clip Is Empty"));
+		return;
+	}
 	CurrentAmmo.Bullets--;
 	LogAmmo();
+
 	if (IsClipEmpty() && !IsAmmoEmpty())
 	{
-		ChangeClip();
+		OnClipEmpty.Broadcast();
 	}
 }
 bool ASBBaseWeapon::IsAmmoEmpty() const 
@@ -103,18 +109,22 @@ bool ASBBaseWeapon::IsClipEmpty() const
 
 void ASBBaseWeapon::ChangeClip() 
 {
-	CurrentAmmo.Bullets = DefaultAmmo.Bullets;
 	if (!CurrentAmmo.Infinite)
 	{
-		/*if (CurrentAmmo.Clips == 0)
+		if (CurrentAmmo.Clips == 0)
 		{
 			UE_LOG(LogBaseWeapon, Display, TEXT("nomoreclipsSBSB"));
 			return;
-		}*/
+		}
 		CurrentAmmo.Clips--;
 	}
-
+	CurrentAmmo.Bullets = DefaultAmmo.Bullets;
 	UE_LOG(LogBaseWeapon, Display, TEXT("ReloadClipsSBSB"));
+}
+
+bool ASBBaseWeapon::CanReload() const
+{
+	return CurrentAmmo.Bullets < DefaultAmmo.Bullets&& CurrentAmmo.Clips > 0;
 }
 
 void ASBBaseWeapon::LogAmmo() 

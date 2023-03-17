@@ -48,7 +48,7 @@ void USBWeaponComponent::SpawnWeapons()
 			auto Weapon = GetWorld()->SpawnActor<ASBBaseWeapon>(OneWeaponData.WeaponClass);
 			if (!Weapon) continue;
 
-			//Weapon->OnClipEmpty.AddUObject(this, &USBWeaponComponent::OnEmptyClip);
+			Weapon->OnClipEmpty.AddUObject(this, &USBWeaponComponent::OnEmptyClip);
 			Weapon->SetOwner(Character);
 			Weapons.Add(Weapon);
 
@@ -172,17 +172,25 @@ bool USBWeaponComponent::CanReload() const
 {
 	return CurrentWeapon//
 		&& !EquipAnimInProgress//
-		&& !ReloadAnimInProgress;
-		//&& CurrentWeapon->CanReload();
+		&& !ReloadAnimInProgress
+		&& CurrentWeapon->CanReload();
 }
 
 
 void USBWeaponComponent::Reload()
 {
+	ChandeClip();
+}
 
-	if (!CanReload()) return; 
-	/*CurrentWeapon->StopFire();
-	CurrentWeapon->ChangeClip();*/
+void USBWeaponComponent::OnEmptyClip() 
+{
+	ChandeClip();
+}
+void USBWeaponComponent::ChandeClip() 
+{
+	if (!CanReload()) return;
+	CurrentWeapon->StopFire();
+	CurrentWeapon->ChangeClip();
 	ReloadAnimInProgress = true;
 	PlayAnimMontage(CurrentReloadAnimMontage);
 }

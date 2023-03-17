@@ -203,11 +203,21 @@ void USBWeaponComponent::ChandeClip()
 	PlayAnimMontage(CurrentReloadAnimMontage);
 }
 
-bool USBWeaponComponent::GetWeaponUIData(FWeaponUIData& UIData) const
+bool USBWeaponComponent::GetCurrentWeaponUIData(FWeaponUIData& UIData) const
 {
 	if (CurrentWeapon)
 	{
 		UIData = CurrentWeapon->GetUIData();
+		return true;
+	}
+	return false;
+}
+
+bool USBWeaponComponent::GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const
+{
+	if (CurrentWeapon)
+	{
+		AmmoData = CurrentWeapon->GetAmmoData();
 		return true;
 	}
 	return false;

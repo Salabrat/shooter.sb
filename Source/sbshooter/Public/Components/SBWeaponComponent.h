@@ -8,6 +8,18 @@
 
 class ASBBaseWeapon;
 
+USTRUCT(BlueprintType)
+struct FWeaponData
+{
+	GENERATED_USTRUCT_BODY()
+
+		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+		TSubclassOf<ASBBaseWeapon> WeaponClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+		UAnimMontage* ReloadAnimMontage;
+};
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SBSHOOTER_API USBWeaponComponent : public UActorComponent
 {
@@ -19,12 +31,14 @@ public:
 	void StartFire();	
 	void StopFire();	
 	void NextWeapon();	
+	void Reload ();
 
 protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-		TArray<TSubclassOf<ASBBaseWeapon>> WeaponClasses;
+		TArray<FWeaponData> WeaponData;
 
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 
 		FName WeaponEquipSocketName = "WeaponSocket";
@@ -44,6 +58,9 @@ private:
 
 	UPROPERTY()
 		TArray<ASBBaseWeapon*> Weapons;
+
+	UPROPERTY()
+		UAnimMontage* CurrentReloadAnimMontage = nullptr;
 
 	int32 CurrentWeaponIndex = 0;
 	bool EquipAnimInProgress = false;

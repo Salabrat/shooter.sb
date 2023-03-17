@@ -3,6 +3,7 @@
 
 #include "UI/SBPlayerHUDWidget.h"
 #include "Components/SBHealthComponent.h"
+#include "Components/SBWeaponComponent.h"
 
 float USBPlayerHUDWidget::GetHealthPercent() const
 {
@@ -14,4 +15,16 @@ float USBPlayerHUDWidget::GetHealthPercent() const
 	if (!HealthComponent) return 0.0f;
 
 	return HealthComponent->GetHealthPercent();
+}
+
+bool USBPlayerHUDWidget::GetWeaponUIData(FWeaponUIData& UIData) const
+{
+	const auto Player = GetOwningPlayerPawn();
+	if (!Player) return false;
+
+	const auto Component = Player->GetComponentByClass(USBWeaponComponent::StaticClass());
+	const auto WeaponComponent = Cast<USBWeaponComponent>(Component);
+	if (!WeaponComponent) return false;
+
+	return WeaponComponent->GetWeaponUIData(UIData);
 }

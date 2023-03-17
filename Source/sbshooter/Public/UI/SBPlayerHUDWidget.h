@@ -8,6 +8,7 @@
 #include "SBPlayerHUDWidget.generated.h"
 
 class USBWeaponComponent;
+class USBHealthComponent;
 
 UCLASS()
 class SBSHOOTER_API USBPlayerHUDWidget : public UUserWidget
@@ -24,7 +25,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
 
+	UFUNCTION(BlueprintCallable, Category = "UI")
+		bool IsPlayerAlive() const;
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+		bool IsPlayerSpectating() const;
+
 private:
 	USBWeaponComponent* GetWeaponComponent() const;
+	USBHealthComponent* GetHealthComponent() const;
 	
 };

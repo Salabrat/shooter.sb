@@ -5,6 +5,7 @@
 #include "Weapon/SBBaseWeapon.h"
 #include "GameFramework/Character.h"
 #include "Animations/SBEquipFinishedAnimNotify.h"
+#include "Animations/SBReloadFinishedAnimNotify.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWeaponComponent, All, All);
 
@@ -123,19 +124,25 @@ void USBWeaponComponent::PlayAnimMontage(UAnimMontage* Animation)
 
 void USBWeaponComponent::InitAnimations() 
 {
-	if (!EquipAnimMontage) return;
-
-	const auto NotifyEvents = EquipAnimMontage->Notifies; //AnimUtils::FindNotifyByClass<USTU_EquipFinishedAnimNotify>(EquipAnimMontage);
-	for (auto NotifyEvent: NotifyEvents)
+	auto EquipFinishedNotify = FindNotifyByClass<USBEquipFinishedAnimNotify>(EquipAnimMontage);
+	if (EquipFinishedNotify)
 	{
-		auto EquipFinishedNotify = Cast<USBEquipFinishedAnimNotify>(NotifyEvent.Notify);
-		if (EquipFinishedNotify)
-		{
-			EquipFinishedNotify->OnNotified.AddUObject(this, & USBWeaponComponent::OnEquipFinished);
-			break;
-		}
+		EquipFinishedNotify->OnNotified.AddUObject(this, &USBWeaponComponent::OnEquipFinished);
 	}
+	else
+	{
+		UE_LOG(LogWeaponComponent, Error, TEXT("Equip anim notify is forgotten to set"));
+		checkNoEntry();
+	}
+	for (auto OneWeaponData : WeaponData)
+	{
+		auto ReloadFinishedNotify = FindNotifyByClass<USBReloadFinishedAnimNotify>(OneWeaponData.ReloadAnimMontage);
+		if (!ReloadFinishedNotify) continue;
+		ReloadFinishedNotify->OnNotified.AddUObject(this, &USBWeaponComponent::OnReloadFinished);
+	}
+
 }
+
 void USBWeaponComponent::OnEquipFinished(USkeletalMeshComponent* MeshComp) 
 {
 	ACharacter* Character = Cast<ACharacter>(GetOwner());
@@ -144,16 +151,38 @@ void USBWeaponComponent::OnEquipFinished(USkeletalMeshComponent* MeshComp)
 
 }
 
+void USBWeaponComponent::OnReloadFinished(USkeletalMeshComponent* MeshComp)
+{
+	ACharacter* Character = Cast<ACharacter>(GetOwner());
+	if (!Character || MeshComp != Character->GetMesh()) return;
+
+	ReloadAnimInProgress = false;
+}
+
 bool USBWeaponComponent::CanFire() const
 {
-	return CurrentWeapon && !EquipAnimInProgress;
+	return CurrentWeapon && !EquipAnimInProgress && !ReloadAnimInProgress;
 }
 bool USBWeaponComponent::CanEquip() const
 {
-	return !EquipAnimInProgress;
+	return !EquipAnimInProgress && !ReloadAnimInProgress;
 }
+
+bool USBWeaponComponent::CanReload() const
+{
+	return CurrentWeapon//
+		&& !EquipAnimInProgress//
+		&& !ReloadAnimInProgress;
+		//&& CurrentWeapon->CanReload();
+}
+
 
 void USBWeaponComponent::Reload()
 {
+
+	if (!CanReload()) return; 
+	/*CurrentWeapon->StopFire();
+	CurrentWeapon->ChangeClip();*/
+	ReloadAnimInProgress = true;
 	PlayAnimMontage(CurrentReloadAnimMontage);
 }

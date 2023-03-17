@@ -4,10 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Animations/SBAnimNotify.h"
-#include "SBEquipFinishedAnimNotify.generated.h"
+#include "SBReloadFinishedAnimNotify.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
-class SBSHOOTER_API USBEquipFinishedAnimNotify : public USBAnimNotify
+class SBSHOOTER_API USBReloadFinishedAnimNotify : public USBAnimNotify
 {
 	GENERATED_BODY()
 	

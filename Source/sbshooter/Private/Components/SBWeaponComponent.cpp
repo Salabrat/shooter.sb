@@ -6,17 +6,23 @@
 #include "GameFramework/Character.h"
 #include "Animations/SBEquipFinishedAnimNotify.h"
 #include "Animations/SBReloadFinishedAnimNotify.h"
+#include "Animations/AnimUtils.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWeaponComponent, All, All);
 
+constexpr static int32 WeaponNum = 2;
+
 USBWeaponComponent::USBWeaponComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void USBWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+
+	checkf(WeaponData.Num() == 2, TEXT("our character can hold only %i weapon items"), WeaponNum);
 
 	CurrentWeaponIndex = 0;
 	InitAnimations();
@@ -54,7 +60,6 @@ void USBWeaponComponent::SpawnWeapons()
 
 			AttachWeaponToSocket(Weapon, Character->GetMesh(), WeaponArmorySocketName);
 		}
-	
 }
 
 void USBWeaponComponent::AttachWeaponToSocket(ASBBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName)
@@ -124,7 +129,7 @@ void USBWeaponComponent::PlayAnimMontage(UAnimMontage* Animation)
 
 void USBWeaponComponent::InitAnimations() 
 {
-	auto EquipFinishedNotify = FindNotifyByClass<USBEquipFinishedAnimNotify>(EquipAnimMontage);
+	auto EquipFinishedNotify = AnimUtils::FindNotifyByClass<USBEquipFinishedAnimNotify>(EquipAnimMontage);
 	if (EquipFinishedNotify)
 	{
 		EquipFinishedNotify->OnNotified.AddUObject(this, &USBWeaponComponent::OnEquipFinished);
@@ -136,8 +141,12 @@ void USBWeaponComponent::InitAnimations()
 	}
 	for (auto OneWeaponData : WeaponData)
 	{
-		auto ReloadFinishedNotify = FindNotifyByClass<USBReloadFinishedAnimNotify>(OneWeaponData.ReloadAnimMontage);
-		if (!ReloadFinishedNotify) continue;
+		auto ReloadFinishedNotify = AnimUtils::FindNotifyByClass<USBReloadFinishedAnimNotify>(OneWeaponData.ReloadAnimMontage);
+		if (!ReloadFinishedNotify)
+		{
+			UE_LOG(LogWeaponComponent, Error, TEXT("Reload anim notify is forgotten to set"));
+			checkNoEntry();
+		}
 		ReloadFinishedNotify->OnNotified.AddUObject(this, &USBWeaponComponent::OnReloadFinished);
 	}
 

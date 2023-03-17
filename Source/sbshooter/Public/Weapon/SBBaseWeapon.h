@@ -4,26 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "SBCoreTypes.h"
 #include "SBBaseWeapon.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnClipEptySignature);
-
 class USkeletalMeshComponent;
-
-USTRUCT(BlueprintType)
-struct FAmmoData
-{
-	GENERATED_USTRUCT_BODY()
-
-		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
-		int32 Bullets;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon", meta = (EditCondition = "!Infinite"))
-		int32 Clips;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
-		bool Infinite;
-};
 
 UCLASS()
 class SBSHOOTER_API ASBBaseWeapon : public AActor
@@ -33,7 +17,7 @@ class SBSHOOTER_API ASBBaseWeapon : public AActor
 public:	
 	ASBBaseWeapon();
 
-	FOnClipEptySignature OnClipEmpty;
+	FOnClipEmptySignature OnClipEmpty;
 
 	virtual void StartFire();
 	virtual void StopFire();

@@ -4,10 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "SBCoreTypes.h"
 #include "SBHealthComponent.generated.h"
-
-DECLARE_MULTICAST_DELEGATE(FOnDeath)
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SBSHOOTER_API USBHealthComponent : public UActorComponent
@@ -17,13 +15,13 @@ class SBSHOOTER_API USBHealthComponent : public UActorComponent
 public:	
 	USBHealthComponent();
 
-	float GetHealth() { return Health; }
+	FOnDeathSignature OnDeath;
+	FOnHealthChangedSignature OnHealthChanged;
 
 	UFUNCTION(BlueprintCallable)
 		bool IsDead() const { return FMath::IsNearlyZero(Health); }
 
-	FOnDeath OnDeath;
-	FOnHealthChanged OnHealthChanged;
+	float GetHealth() { return Health; }
 
 protected:
 

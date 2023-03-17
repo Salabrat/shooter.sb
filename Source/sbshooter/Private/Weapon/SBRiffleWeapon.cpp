@@ -7,10 +7,9 @@
 
 void ASBRiffleWeapon::StartFire()
 {
-	MakeShot();
 	//InitMuzzleFX();
 	GetWorldTimerManager().SetTimer(ShotTimerHandle, this, &ASBRiffleWeapon::MakeShot, TimeBetweenShots, true);
-	
+	MakeShot();
 }
 
 void ASBRiffleWeapon::StopFire()

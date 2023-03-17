@@ -23,6 +23,8 @@ void ASBBaseWeapon::BeginPlay()
 	Super::BeginPlay();
 	
 	check(WeaponMesh);
+	checkf(DefaultAmmo.Bullets > 0, TEXT("BULLETS ne mozhet byt' menshe null"));
+	checkf(DefaultAmmo.Clips > 0, TEXT("Clips ne mozhet byt' menshe null"));
 	CurrentAmmo = DefaultAmmo;
 }
 

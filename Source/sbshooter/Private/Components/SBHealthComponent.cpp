@@ -10,12 +10,14 @@ DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All)
 
 USBHealthComponent::USBHealthComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 void USBHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	check(MaxHealth > 0);
 
 	SetHealth (MaxHealth);
 

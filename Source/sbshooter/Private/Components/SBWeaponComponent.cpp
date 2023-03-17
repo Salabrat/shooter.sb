@@ -21,7 +21,6 @@ void USBWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-
 	checkf(WeaponData.Num() == 2, TEXT("our character can hold only %i weapon items"), WeaponNum);
 
 	CurrentWeaponIndex = 0;

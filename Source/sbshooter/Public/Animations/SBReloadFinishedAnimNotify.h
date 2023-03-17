@@ -6,9 +6,6 @@
 #include "Animations/SBAnimNotify.h"
 #include "SBReloadFinishedAnimNotify.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class SBSHOOTER_API USBReloadFinishedAnimNotify : public USBAnimNotify
 {

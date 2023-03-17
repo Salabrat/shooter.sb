@@ -26,10 +26,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 		TArray<FWeaponData> WeaponData;
-
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-
 		FName WeaponEquipSocketName = "WeaponSocket";
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")

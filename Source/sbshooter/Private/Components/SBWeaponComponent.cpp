@@ -187,14 +187,31 @@ bool USBWeaponComponent::CanReload() const
 
 void USBWeaponComponent::Reload()
 {
-	ChandeClip();
+	ChangeClip();
 }
 
-void USBWeaponComponent::OnEmptyClip() 
+void USBWeaponComponent::OnEmptyClip(ASBBaseWeapon* AmmoEmptyWeapon)
 {
-	ChandeClip();
+
+	if (!AmmoEmptyWeapon) return;
+
+	if (CurrentWeapon == AmmoEmptyWeapon)
+	{
+		ChangeClip();
+	}
+	else
+	{
+		for (const auto Weapon : Weapons)
+		{
+			if (Weapon == AmmoEmptyWeapon)
+			{
+				Weapon->ChangeClip();
+			}
+		}
+	}
 }
-void USBWeaponComponent::ChandeClip() 
+
+void USBWeaponComponent::ChangeClip()
 {
 	if (!CanReload()) return;
 	CurrentWeapon->StopFire();
@@ -219,6 +236,18 @@ bool USBWeaponComponent::GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const
 	{
 		AmmoData = CurrentWeapon->GetAmmoData();
 		return true;
+	}
+	return false;
+}
+
+bool USBWeaponComponent::TryToAddAmmo(TSubclassOf<ASBBaseWeapon> WeaponType, int32 ClipsAmount)
+{
+	for (const auto Weapon : Weapons)
+	{
+		if (Weapon && Weapon->IsA(WeaponType))
+		{
+			return Weapon->TryToAddAmmo(ClipsAmount);
+		}
 	}
 	return false;
 }

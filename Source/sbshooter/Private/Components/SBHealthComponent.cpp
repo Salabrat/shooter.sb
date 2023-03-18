@@ -66,3 +66,17 @@ void USBHealthComponent::SetHealth(float NewHealth)
 	Health = NextHealth;
 	OnHealthChanged.Broadcast(Health);
 }
+
+bool USBHealthComponent::TryToAddHealth(float HealthAmount)
+{
+	if (IsDead() || IsHealthFull()) return false;
+
+	SetHealth(Health + HealthAmount);
+	return true;
+}
+
+bool USBHealthComponent::IsHealthFull() const
+{
+	return FMath::IsNearlyEqual(Health, MaxHealth);
+
+}

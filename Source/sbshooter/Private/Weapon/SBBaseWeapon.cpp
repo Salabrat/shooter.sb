@@ -100,10 +100,12 @@ void ASBBaseWeapon::DecreaseAmmo()
 		OnClipEmpty.Broadcast(this);
 	}
 }
+
 bool ASBBaseWeapon::IsAmmoEmpty() const 
 {
 	return !CurrentAmmo.Infinite && CurrentAmmo.Clips == 0 && IsClipEmpty();
 }
+
 bool ASBBaseWeapon::IsClipEmpty() const 
 {
 	return CurrentAmmo.Bullets == 0;

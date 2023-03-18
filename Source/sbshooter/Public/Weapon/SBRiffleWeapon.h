@@ -6,12 +6,16 @@
 #include "Weapon/SBBaseWeapon.h"
 #include "SBRiffleWeapon.generated.h"
 
+class USBWeaponFXComponent;
+
 UCLASS()
 class SBSHOOTER_API ASBRiffleWeapon : public ASBBaseWeapon
 {
 	GENERATED_BODY()
 
 public:
+	ASBRiffleWeapon();
+
 	virtual void StartFire() override;
 	virtual void StopFire() override;
 
@@ -24,6 +28,11 @@ protected:
 
 		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 			float BulletSpread = 1.5f;
+			
+		UPROPERTY(VisibleAnywhere, Category = "VFX")
+			USBWeaponFXComponent* WeaponFXComponent;
+
+		virtual	void BeginPlay() override;
 		virtual	void MakeShot();
 		virtual bool GetTraceData(FVector& TraceStart, FVector& TraceEnd) const override;
 

@@ -8,7 +8,12 @@ public class sbshooter : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core",
+			"CoreUObject", 
+			"Engine", 
+			"InputCore",
+			"Niagara"
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
@@ -19,8 +24,9 @@ public class sbshooter : ModuleRules
 			"sbshooter/Public/Weapon",
 			"sbshooter/Public/UI",
 			"sbshooter/Public/Animations",
-			"sbshooter/Public/Pickups"
-		});
+			"sbshooter/Public/Pickups",
+            "sbshooter/Public/Weapon/Components"
+        });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

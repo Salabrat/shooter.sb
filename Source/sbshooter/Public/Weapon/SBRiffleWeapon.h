@@ -7,6 +7,7 @@
 #include "SBRiffleWeapon.generated.h"
 
 class USBWeaponFXComponent;
+class UNiagaraComponent;
 
 UCLASS()
 class SBSHOOTER_API ASBRiffleWeapon : public ASBBaseWeapon
@@ -39,6 +40,9 @@ protected:
 private:
 	FTimerHandle ShotTimerHandle;
 
-	void MakeDamage(const FHitResult& HitResult);
+	UNiagaraComponent* MuzzleFXComponent;
 
+	void MakeDamage(const FHitResult& HitResult);
+	void InitMuzzleFX();
+	void SetMuzzleFXVisibility(bool Visible);
 };

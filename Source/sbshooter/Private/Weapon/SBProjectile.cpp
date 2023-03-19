@@ -4,7 +4,7 @@
 #include "Weapon/SBProjectile.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "DrawDebugHelpers.h"
+//#include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "Weapon/Components/SBWeaponFXComponent.h"
 
@@ -59,7 +59,7 @@ void ASBProjectile::OnProjectileHit(
 		GetController(), //
 		DoFullDamage);
 
-	DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Red, false, 5.0f);
+	//DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Red, false, 5.0f);
 	WeaponFXComponent->PlayImpactFX(Hit);
 	Destroy();
 }

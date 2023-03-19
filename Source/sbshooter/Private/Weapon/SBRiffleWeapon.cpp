@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 #include "Weapon/Components/SBWeaponFXComponent.h"
+#include "NiagaraComponent.h"
 
 ASBRiffleWeapon::ASBRiffleWeapon()
 {
@@ -28,7 +29,7 @@ void ASBRiffleWeapon::StartFire()
 void ASBRiffleWeapon::StopFire()
 {
 	GetWorldTimerManager().ClearTimer(ShotTimerHandle);
-	//SetMuzzleFXVisibility(false);
+	SetMuzzleFXVisibility(false);
 }
 
 void ASBRiffleWeapon::MakeShot()
@@ -60,7 +61,7 @@ void ASBRiffleWeapon::MakeShot()
 	}
 	else
 	{
-		DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Red, false, 3.0f, 0, 3.0f);
+		//DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Red, false, 3.0f, 0, 3.0f);
 	}
 	DecreaseAmmo();
 }
@@ -84,4 +85,22 @@ void ASBRiffleWeapon::MakeDamage(const FHitResult& HitResult)
 	if (!DamagedActor) return;
 
 	DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPLayerController(), this);
+}
+
+void ASBRiffleWeapon::InitMuzzleFX()
+{
+	if (!MuzzleFXComponent)
+	{
+		MuzzleFXComponent = SpawnMuzzleFX();
+	}
+	SetMuzzleFXVisibility(true);
+}
+
+void ASBRiffleWeapon::SetMuzzleFXVisibility(bool Visible)
+{
+	if (MuzzleFXComponent)
+	{
+		MuzzleFXComponent->SetPaused(!Visible);
+		MuzzleFXComponent->SetVisibility(Visible, true);
+	}
 }

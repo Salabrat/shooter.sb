@@ -7,6 +7,7 @@
 #include "SBWeaponFXComponent.generated.h"
 
 class UNiagaraSystem;
+class UPhysicalMaterial;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SBSHOOTER_API USBWeaponFXComponent : public UActorComponent
@@ -14,12 +15,14 @@ class SBSHOOTER_API USBWeaponFXComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	USBWeaponFXComponent();
 
 	void PlayImpactFX(const FHitResult& Hit);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
-		UNiagaraSystem* Effect;
+		UNiagaraSystem* DefaultEffect;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+		TMap<UPhysicalMaterial*, UNiagaraSystem*> EffectsMap;
 };

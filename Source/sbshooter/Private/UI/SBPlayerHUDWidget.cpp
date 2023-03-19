@@ -4,6 +4,28 @@
 #include "UI/SBPlayerHUDWidget.h"
 #include "Components/SBHealthComponent.h"
 #include "Components/SBWeaponComponent.h"
+#include "SBUtils.h"
+
+
+bool USBPlayerHUDWidget::Initialize() 
+{
+	const auto HealthComponent = SBUtils::GetSBPlayerComponent<USBHealthComponent>(GetOwningPlayerPawn());
+	if (HealthComponent)
+	{
+		HealthComponent->OnHealthChanged.AddUObject(this, &USBPlayerHUDWidget::OnHealthChanged);
+
+	}
+	return Super::Initialize();
+}
+
+void USBPlayerHUDWidget::OnHealthChanged(float Health, float HealthDelta)
+{
+	if(HealthDelta < 0.0f)
+	{
+	OnTakeDamage();
+	}
+}
+
 
 float USBPlayerHUDWidget::GetHealthPercent() const
 {

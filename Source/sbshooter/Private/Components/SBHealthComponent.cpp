@@ -56,7 +56,7 @@ void USBHealthComponent::HealUpdate()
 {
 	SetHealth(Health + HealModifier);
 
-	if (FMath::IsNearlyEqual	(Health, MaxHealth) && GetWorld())//IsHealthFull() 
+	if (IsHealthFull() && GetWorld())
 	{
 		GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
 	}
@@ -68,7 +68,7 @@ void USBHealthComponent::SetHealth(float NewHealth)
 	const auto HealthDelta = NextHealth - Health;
 
 	Health = NextHealth;
-	OnHealthChanged.Broadcast(Health);
+	OnHealthChanged.Broadcast(Health, HealthDelta);
 }
 
 bool USBHealthComponent::TryToAddHealth(float HealthAmount)

@@ -31,8 +31,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 		bool IsPlayerSpectating() const;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "UI")
+	void OnTakeDamage();
+
+	virtual bool Initialize() override;
+
 private:
 	USBWeaponComponent* GetWeaponComponent() const;
 	USBHealthComponent* GetHealthComponent() const;
 	
+	void OnHealthChanged(float Health, float HealthDelta);
 };

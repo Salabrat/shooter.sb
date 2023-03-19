@@ -3,8 +3,11 @@
 
 #include "Components/SBHealthComponent.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/Pawn.h"
+#include "GameFramework/Controller.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
+#include "Camera/CameraShakeBase.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All)
 
@@ -46,6 +49,7 @@ void USBHealthComponent::OnTakeAnyDamage
 	{
 		GetWorld()->GetTimerManager().SetTimer(HealTimerHandle, this, &USBHealthComponent::HealUpdate, HealUpdateTime, true, HealDelay);
 	}
+	PlayCameraShake();
 }
 
 void USBHealthComponent::HealUpdate()
@@ -80,3 +84,16 @@ bool USBHealthComponent::IsHealthFull() const
 	return FMath::IsNearlyEqual(Health, MaxHealth);
 
 }
+void USBHealthComponent::PlayCameraShake() 
+{
+	if (IsDead()) return;
+
+	const auto Player = Cast<APawn>(GetOwner());
+	if (!Player) return;
+
+	const auto Controller = Player->GetController<APlayerController>();
+	if (!Controller || !Controller->PlayerCameraManager) return;
+
+	Controller->PlayerCameraManager->StartCameraShake(CameraShake);
+}
+

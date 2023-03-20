@@ -6,11 +6,22 @@
 #include "AIController.h"
 #include "SBAIController.generated.h"
 
+class USBAIPerceptionComponent;
+
 UCLASS()
 class SBSHOOTER_API ASBAIController : public AAIController
 {
 	GENERATED_BODY()
-	
+
+public:
+	ASBAIController();
+
 protected:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+		USBAIPerceptionComponent* SBAIPerceptionComponent;
+
 	virtual void OnPossess(APawn* InPawn) override;
+	virtual void Tick(float DeltaTime) override;
+
 };

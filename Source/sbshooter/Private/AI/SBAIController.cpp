@@ -3,7 +3,17 @@
 
 #include "AI/SBAIController.h"
 #include "AI/SBAICharacter.h"
+#include "Components/SBAIPerceptionComponent.h"
 
+ASBAIController::ASBAIController()
+{
+	SBAIPerceptionComponent = CreateDefaultSubobject<USBAIPerceptionComponent>("SBAIPerceptionComponent");
+	SetPerceptionComponent(*SBAIPerceptionComponent);
+
+	/*RespawnComponent = CreateDefaultSubobject<USBRespawnComponent>("RespawnComponent");
+
+	bWantsPlayerState = true;*/
+}
 
 void ASBAIController::OnPossess(APawn* InPawn)
 {
@@ -14,4 +24,11 @@ void ASBAIController::OnPossess(APawn* InPawn)
 	{
 		RunBehaviorTree(SBCharacter->UBehaviorTreeAsset);
 	}
+}
+
+void ASBAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	const auto AimActor = SBAIPerceptionComponent->GetClosestEnemy();// GetFocusOnActor();
+	SetFocus(AimActor);
 }

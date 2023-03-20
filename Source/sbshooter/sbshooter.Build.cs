@@ -32,7 +32,8 @@ public class sbshooter : ModuleRules
             "sbshooter/Public/AI",
             "sbshooter/Public/AI/Tasks",
             "sbshooter/Public/AI/Services",
-            "sbshooter/Public/AI/EQS"
+            "sbshooter/Public/AI/EQS",
+            "sbshooter/Public/AI/Decorators"
         });
 
 		// Uncomment if you are using Slate UI

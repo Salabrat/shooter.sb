@@ -8,6 +8,7 @@
 
 class USBWeaponFXComponent;
 class UNiagaraComponent;
+class UNiagaraSystem;
 
 UCLASS()
 class SBSHOOTER_API ASBRiffleWeapon : public ASBBaseWeapon
@@ -29,7 +30,13 @@ protected:
 
 		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 			float BulletSpread = 1.5f;
-			
+
+		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+			UNiagaraSystem* TraceFX;
+
+		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
+			FString TraceTargetName = "TraceTarget";
+
 		UPROPERTY(VisibleAnywhere, Category = "VFX")
 			USBWeaponFXComponent* WeaponFXComponent;
 
@@ -45,4 +52,5 @@ private:
 	void MakeDamage(const FHitResult& HitResult);
 	void InitMuzzleFX();
 	void SetMuzzleFXVisibility(bool Visible);
+	void SpawnTraceFX(const FVector& TraceStart, const FVector& TraceEnd);
 };

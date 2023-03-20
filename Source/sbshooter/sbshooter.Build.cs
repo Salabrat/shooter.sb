@@ -13,7 +13,9 @@ public class sbshooter : ModuleRules
 			"Engine", 
 			"InputCore",
 			"Niagara",
-			"PhysicsCore"
+			"PhysicsCore",
+			"GameplayTasks",
+			"NavigationSystem"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
@@ -26,7 +28,9 @@ public class sbshooter : ModuleRules
 			"sbshooter/Public/UI",
 			"sbshooter/Public/Animations",
 			"sbshooter/Public/Pickups",
-            "sbshooter/Public/Weapon/Components"
+            "sbshooter/Public/Weapon/Components",
+            "sbshooter/Public/AI",
+            "sbshooter/Public/AI/Tasks"
         });
 
 		// Uncomment if you are using Slate UI

@@ -251,3 +251,15 @@ bool USBWeaponComponent::TryToAddAmmo(TSubclassOf<ASBBaseWeapon> WeaponType, int
 	}
 	return false;
 }
+
+bool USBWeaponComponent::NeedAmmo(TSubclassOf<ASBBaseWeapon> WeaponType)
+{
+	for (const auto Weapon : Weapons)
+	{
+		if (Weapon && Weapon->IsA(WeaponType))
+		{
+			return Weapon->IsAmmoFull();
+		}
+	}
+	return false;
+}

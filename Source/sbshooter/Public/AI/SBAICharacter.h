@@ -18,4 +18,5 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
 		UBehaviorTree* UBehaviorTreeAsset;
+
 };

@@ -30,7 +30,8 @@ public class sbshooter : ModuleRules
 			"sbshooter/Public/Pickups",
             "sbshooter/Public/Weapon/Components",
             "sbshooter/Public/AI",
-            "sbshooter/Public/AI/Tasks"
+            "sbshooter/Public/AI/Tasks",
+            "sbshooter/Public/AI/Services"
         });
 
 		// Uncomment if you are using Slate UI

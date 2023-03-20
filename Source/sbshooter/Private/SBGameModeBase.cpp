@@ -7,6 +7,8 @@
 #include "UI/SBGameHUD.h"
 #include "AIController.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogSBGameModeBase, All, All);
+
 ASBGameModeBase::ASBGameModeBase()
 {
 	DefaultPawnClass = ASBBaseCharacter::StaticClass();
@@ -19,9 +21,9 @@ void ASBGameModeBase::StartPlay()
 	Super::StartPlay();
 
 	SpawnBots();
-//	CreateTeamsInfo();
-//	CurrentRound = 1;
-//	StartRound();
+	//CreateTeamsInfo();
+	CurrentRound = 1;
+	StartRound();
 }
 
 UClass* ASBGameModeBase::GetDefaultPawnClassForController_Implementation(AController* InController)
@@ -45,3 +47,32 @@ void ASBGameModeBase::SpawnBots()
 	RestartPlayer(SBAIController);
 	}
 }
+
+void ASBGameModeBase::StartRound()
+{
+	RoundCountDown = GameData.RoundTime;
+	GetWorldTimerManager().SetTimer(GameRoundTimerHandle, this, &ASBGameModeBase::GameTimerUpdate, 1.0f, true);
+}
+
+void ASBGameModeBase::GameTimerUpdate()
+{
+
+	UE_LOG(LogSBGameModeBase, Display, TEXT("Time: %i / Round: %i/%i"), RoundCountDown, CurrentRound, GameData.RoundsNum);
+
+	if (--RoundCountDown == 0)
+	{
+		GetWorldTimerManager().ClearTimer(GameRoundTimerHandle);
+
+		if (CurrentRound + 1 <= GameData.RoundsNum)
+		{
+			++CurrentRound;
+			//ResetPlayers();
+			StartRound();
+		}
+		else
+		{
+			UE_LOG(LogSBGameModeBase, Display, TEXT("------------GameOver();-----------"));
+		}
+	}
+}
+

@@ -137,7 +137,7 @@ void ASBBaseWeapon::ChangeClip()
 		CurrentAmmo.Clips--;
 	}
 	CurrentAmmo.Bullets = DefaultAmmo.Bullets;
-	UE_LOG(LogBaseWeapon, Display, TEXT("ReloadClipsSBSB"));
+	//UE_LOG(LogBaseWeapon, Display, TEXT("ReloadClipsSBSB"));
 }
 
 bool ASBBaseWeapon::CanReload() const

@@ -5,6 +5,7 @@
 #include "AI/SBAIController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/SBAIWeaponComponent.h"
+#include "BrainComponent.h"
 
 
 ASBAICharacter::ASBAICharacter(const FObjectInitializer& ObjInit)
@@ -19,5 +20,16 @@ ASBAICharacter::ASBAICharacter(const FObjectInitializer& ObjInit)
 	{
 		GetCharacterMovement()->bUseControllerDesiredRotation = true;
 		GetCharacterMovement()->RotationRate = FRotator(0.0f, 200.0f, 0.0f);
+	}
+}
+
+void ASBAICharacter::OnDeath()
+{
+	Super::OnDeath();
+
+	const auto SBController = Cast<AAIController>(Controller);
+	if (SBController && SBController->BrainComponent)
+	{
+		SBController->BrainComponent->Cleanup();
 	}
 }

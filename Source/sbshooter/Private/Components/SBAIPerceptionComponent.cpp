@@ -24,10 +24,10 @@ AActor* USBAIPerceptionComponent::GetClosestEnemy() const
 	{
 		const auto HealthComponent = SBUtils::GetSBPlayerComponent<USBHealthComponent>(PercieveActor);
 
-		/*const auto	 PercievePawn = Cast<APawn>(PercieveActor);
-		const auto AreEnemies = PercievePawn && SBUtils::AreEnemies(Controller, PercievePawn->Controller);*/
+		const auto	 PercievePawn = Cast<APawn>(PercieveActor);
+		const auto AreEnemies = PercievePawn && SBUtils::AreEnemies(Controller, PercievePawn->Controller);
 
-		if (HealthComponent && !HealthComponent->IsDead()) //&& AreEnemies) // TODO: check if enemies or not 
+		if (HealthComponent && !HealthComponent->IsDead() && AreEnemies) 
 		{
 			const auto CurrentDistance = (PercieveActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
 			if (CurrentDistance < BestDistance)

@@ -31,3 +31,8 @@ void USBRespawnComponent::RespawnTimerUpdate()
 		GameMode->RespawnRequest(Cast<AController>(GetOwner()));
 	}
 }
+
+bool USBRespawnComponent::IsRespawnInProgress() const
+{
+	return GetWorld() && GetWorld()->GetTimerManager().IsTimerActive(RespawnTimerHandle);
+}

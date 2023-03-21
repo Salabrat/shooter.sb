@@ -8,6 +8,7 @@
 #include "Engine/World.h"
 #include "TimerManager.h"
 #include "Camera/CameraShakeBase.h"
+#include "SBGameModeBase.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All)
 
@@ -42,7 +43,7 @@ void USBHealthComponent::OnTakeAnyDamage
 
 	if (IsDead())
 	{
-		//Killed(InstigatedBy);
+		Killed(InstigatedBy);
 		OnDeath.Broadcast();
 	}
 	else if (AutoHeal)
@@ -97,3 +98,29 @@ void USBHealthComponent::PlayCameraShake()
 	Controller->PlayerCameraManager->StartCameraShake(CameraShake);
 }
 
+void USBHealthComponent::Killed(AController* KillerController)//, AController* VictimController)
+{
+
+	const auto GameMode = Cast<ASBGameModeBase>(GetWorld()->GetAuthGameMode());
+	if (!GameMode) return;
+
+	const auto Player = Cast<APawn>(GetOwner());
+	const auto VictimController = Player ? Player->Controller : nullptr;
+
+	GameMode->Killed(KillerController, VictimController);
+
+
+	/*const auto KillerPlayerState = KillerController ? Cast <ASBPlayerState>(KillerController->PlayerState) : nullptr;
+	const auto VictimPlayerState = VictimController ? Cast <ASBPlayerState>(VictimController->PlayerState) : nullptr;
+
+	if (KillerPlayerState)
+	{
+		KillerPlayerState->AddKill();
+	}
+
+	if (VictimPlayerState)
+	{
+		VictimPlayerState->AddDeath();
+	}
+	StartRespawn(VictimController);*/
+}

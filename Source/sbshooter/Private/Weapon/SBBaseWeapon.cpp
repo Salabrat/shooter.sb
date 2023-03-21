@@ -30,34 +30,20 @@ void ASBBaseWeapon::BeginPlay()
 	CurrentAmmo = DefaultAmmo;
 }
 
-void ASBBaseWeapon::StartFire()
-{
-}
+void ASBBaseWeapon::StartFire(){}
 
-void ASBBaseWeapon::StopFire()
-{
-}
+void ASBBaseWeapon::StopFire(){}
 
-void ASBBaseWeapon::MakeShot()
-{
-}
-
-APlayerController* ASBBaseWeapon::GetPLayerController() const
-{
-	const auto Player = Cast<ACharacter>(GetOwner());
-	if (!Player) return nullptr;
-
-	return Player->GetController<APlayerController>();
-}
+void ASBBaseWeapon::MakeShot(){}
 
 bool ASBBaseWeapon::GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const
 {
-	const auto MyCharacter = Cast<ACharacter>(GetOwner());
-	if (!MyCharacter) return false;
+	const auto SBCharacter = Cast<ACharacter>(GetOwner());
+	if (!SBCharacter) return false;
 
-	if (MyCharacter->IsPlayerControlled())
+	if (SBCharacter->IsPlayerControlled())
 	{
-		const auto Controller = MyCharacter->GetController<APlayerController>();
+		const auto Controller = SBCharacter->GetController<APlayerController>();
 		if (!Controller) return false;
 
 		Controller->GetPlayerViewPoint(ViewLocation, ViewRotation);
@@ -103,7 +89,7 @@ void ASBBaseWeapon::DecreaseAmmo()
 {
 	if (CurrentAmmo.Bullets == 0)
 	{
-		UE_LOG(LogBaseWeapon, Warning, TEXT("Clip Is Empty"));
+		//UE_LOG(LogBaseWeapon, Warning, TEXT("Clip Is Empty"));
 		return;
 	}
 	CurrentAmmo.Bullets--;

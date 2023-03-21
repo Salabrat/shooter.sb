@@ -75,6 +75,7 @@ void ASBGameModeBase::GameTimerUpdate()
 		else
 		{
 			UE_LOG(LogSBGameModeBase, Display, TEXT("------------GameOver();-----------"));
+			LogPlayerInfo();
 		}
 	}
 }
@@ -140,4 +141,37 @@ void ASBGameModeBase::SetPlayerColor(AController* Controller)
 	if (!PlayerState) return;
 
 	Character->SetPlayerColor(PlayerState->GetTeamColor());
+}
+
+void ASBGameModeBase::Killed(AController* KillerController, AController* VictimController)
+{
+const auto KillerPlayerState = KillerController ? Cast <ASBPlayerState>(KillerController->PlayerState) : nullptr;
+	const auto VictimPlayerState = VictimController ? Cast <ASBPlayerState>(VictimController->PlayerState) : nullptr;
+
+	if (KillerPlayerState)
+	{
+		KillerPlayerState->AddKill();
+	}
+
+	if (VictimPlayerState)
+	{
+		VictimPlayerState->AddDeath();
+	}
+	//StartRespawn(VictimController);
+}
+
+void ASBGameModeBase::LogPlayerInfo()
+{
+	if (!GetWorld()) return;
+	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
+	{
+		const auto Controller = It->Get();
+		if (!Controller)continue;
+
+		const auto PlayerState = Cast<ASBPlayerState>(Controller->PlayerState);
+		if (!PlayerState) continue;
+
+		PlayerState->LogInfo();
+	}
+
 }

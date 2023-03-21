@@ -35,7 +35,7 @@ void ASBRiffleWeapon::StopFire()
 
 void ASBRiffleWeapon::MakeShot()
 {
-	UE_LOG(LogTemp, Display, TEXT("MAkeShot"));
+	//UE_LOG(LogTemp, Display, TEXT("MAkeShot"));
 	if (!GetWorld() || IsAmmoEmpty()) 
 	{
 		StopFire();
@@ -81,7 +81,7 @@ void ASBRiffleWeapon::MakeDamage(const FHitResult& HitResult)
 	const auto DamagedActor = HitResult.GetActor();
 	if (!DamagedActor) return;
 
-	DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPLayerController(), this);
+	DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetController(), this);
 }
 
 void ASBRiffleWeapon::InitMuzzleFX()
@@ -109,4 +109,10 @@ void ASBRiffleWeapon::SpawnTraceFX(const FVector& TraceStart, const FVector& Tra
 	{
 		TraceFXComponent->SetNiagaraVariableVec3(TraceTargetName, TraceEnd);
 	}
+}
+
+AController* ASBRiffleWeapon::GetController() const
+{
+	const auto Pawn = Cast<APawn>(GetOwner());
+	return Pawn ? Pawn->GetController() : nullptr;
 }

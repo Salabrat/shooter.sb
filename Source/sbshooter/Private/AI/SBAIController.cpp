@@ -12,8 +12,8 @@ ASBAIController::ASBAIController()
 	SetPerceptionComponent(*SBAIPerceptionComponent);
 
 	/*RespawnComponent = CreateDefaultSubobject<USBRespawnComponent>("RespawnComponent");
-
-	bWantsPlayerState = true;*/
+*/
+	bWantsPlayerState = true;
 }
 
 void ASBAIController::OnPossess(APawn* InPawn)

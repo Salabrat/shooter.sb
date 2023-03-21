@@ -66,7 +66,7 @@ void ASBGameModeBase::GameTimerUpdate()
 		if (CurrentRound + 1 <= GameData.RoundsNum)
 		{
 			++CurrentRound;
-			//ResetPlayers();
+			ResetPlayers();
 			StartRound();
 		}
 		else
@@ -75,4 +75,24 @@ void ASBGameModeBase::GameTimerUpdate()
 		}
 	}
 }
+
+void ASBGameModeBase::ResetPlayers()
+{
+	if (!GetWorld()) return;
+	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
+	{
+		ResetOnePlayer(It->Get());
+	}
+}
+
+void ASBGameModeBase::ResetOnePlayer(AController* Controller)
+{
+	if (Controller && Controller->GetPawn())
+	{
+		Controller->GetPawn()->Reset();
+	}
+	RestartPlayer(Controller);
+	//SetPlayerColor(Controller);
+}
+
 

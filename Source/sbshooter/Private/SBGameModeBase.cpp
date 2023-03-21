@@ -9,6 +9,7 @@
 #include "Player/SBPlayerState.h"
 #include "SBUtils.h"
 #include "Components/SBRespawnComponent.h"
+#include "EngineUtils.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSBGameModeBase, All, All);
 
@@ -78,8 +79,7 @@ void ASBGameModeBase::GameTimerUpdate()
 		}
 		else
 		{
-			UE_LOG(LogSBGameModeBase, Display, TEXT("------------GameOver();-----------"));
-			LogPlayerInfo();
+			GameOver();
 		}
 	}
 }
@@ -195,4 +195,19 @@ void ASBGameModeBase::StartRespawn(AController* Controller)
 void ASBGameModeBase::RespawnRequest(AController* Controller)
 {
 	ResetOnePlayer(Controller);
+}
+
+void ASBGameModeBase::GameOver()
+{
+	UE_LOG(LogSBGameModeBase, Display, TEXT("--------------GameOVER--------------"));
+	LogPlayerInfo();
+
+	for (auto Pawn : TActorRange<APawn>(GetWorld()))
+	{
+		if (Pawn)
+		{
+			Pawn->TurnOff();
+			Pawn->DisableInput(nullptr);
+		}
+	}
 }

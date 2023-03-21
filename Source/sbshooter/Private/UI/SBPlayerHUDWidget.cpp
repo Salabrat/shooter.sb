@@ -6,9 +6,16 @@
 #include "Components/SBWeaponComponent.h"
 #include "SBUtils.h"
 
-
-bool USBPlayerHUDWidget::Initialize() 
+bool USBPlayerHUDWidget::Initialize()
 {
+	if (GetOwningPlayer())
+	{	
+		GetOwningPlayer()->GetOnNewPawnNotifier().AddUObject(this, &USBPlayerHUDWidget::OnNewPawn);
+		OnNewPawn(GetOwningPlayerPawn());
+		//test
+		OnNewPawn(GetOwningPlayerPawn());
+		OnNewPawn(GetOwningPlayerPawn());
+	}
 	const auto HealthComponent = SBUtils::GetSBPlayerComponent<USBHealthComponent>(GetOwningPlayerPawn());
 	if (HealthComponent)
 	{
@@ -16,6 +23,15 @@ bool USBPlayerHUDWidget::Initialize()
 
 	}
 	return Super::Initialize();
+}
+
+void USBPlayerHUDWidget::OnNewPawn(APawn* NewPawn)
+{
+	const auto HealthComponent = SBUtils::GetSBPlayerComponent<USBHealthComponent>(NewPawn);
+	if (HealthComponent && !HealthComponent->OnHealthChanged.IsBoundToObject(this))
+	{
+		HealthComponent->OnHealthChanged.AddUObject(this, &USBPlayerHUDWidget::OnHealthChanged);
+	}	
 }
 
 void USBPlayerHUDWidget::OnHealthChanged(float Health, float HealthDelta)

@@ -9,4 +9,9 @@ ASBPlayerController::ASBPlayerController()
 	RespawnComponent = CreateDefaultSubobject<USBRespawnComponent>("RespawnComponent");
 }
 
+void ASBPlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
 
+	OnNewPawn.Broadcast(InPawn);
+}

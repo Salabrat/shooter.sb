@@ -10,8 +10,8 @@
 #include "Components/SBWeaponComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Controller.h"
-
-DEFINE_LOG_CATEGORY_STATIC(LogBaseCharacter, All, All);
+#include "Components/SphereComponent.h"
+#include "Components/CapsuleComponent.h"
 
 ASBBaseCharacter::ASBBaseCharacter(const FObjectInitializer& ObjInit)
 	: Super(ObjInit.SetDefaultSubobjectClass<USBCharacterMovementComponent>(ASBBaseCharacter::CharacterMovementComponentName))
@@ -27,13 +27,17 @@ ASBBaseCharacter::ASBBaseCharacter(const FObjectInitializer& ObjInit)
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComponent->SetupAttachment(SpringArmComponent);
 
+	CameraCollisionComponent = CreateDefaultSubobject<USphereComponent>("CameraCollisionComponent");
+	CameraCollisionComponent->SetupAttachment(CameraComponent);
+	CameraCollisionComponent->SetSphereRadius(10.0f);
+	CameraCollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+
 	HealthComponent = CreateDefaultSubobject<USBHealthComponent>("HealthComponent");
 
 	HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
 	HealthTextComponent->SetupAttachment(GetRootComponent());
 
 	WeaponComponent = CreateDefaultSubobject<USBWeaponComponent>("WeaponComponent");
-
 }
 
 void ASBBaseCharacter::BeginPlay()
@@ -44,11 +48,47 @@ void ASBBaseCharacter::BeginPlay()
 	check(GetCharacterMovement());
 	check(GetMesh());
 
+	check(CameraCollisionComponent);
+
+	
 	OnHealthChanged(HealthComponent->GetHealth(), 0.0f);
 	HealthComponent->OnDeath.AddUObject(this, &ASBBaseCharacter::OnDeath);
 	HealthComponent->OnHealthChanged.AddUObject(this, &ASBBaseCharacter::OnHealthChanged);
 
 	LandedDelegate.AddDynamic(this, &ASBBaseCharacter::OnGroundLanded);
+
+	(CameraCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ASBBaseCharacter::OnCameraCollisionBeginOverlap));
+	(CameraCollisionComponent->OnComponentEndOverlap.AddDynamic(this, &ASBBaseCharacter::OnCameraCollisionEndOverlap));
+
+}
+
+void ASBBaseCharacter::OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	CheckCameraOverlap();
+}
+
+void ASBBaseCharacter::OnCameraCollisionEndOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	CheckCameraOverlap();
+}
+
+void ASBBaseCharacter::CheckCameraOverlap()
+{
+	const auto HideMesh = CameraCollisionComponent->IsOverlappingComponent(GetCapsuleComponent());
+	GetMesh()->SetOwnerNoSee(HideMesh);
+
+	TArray<USceneComponent*> MeshChildren;
+	GetMesh()->GetChildrenComponents(true, MeshChildren);
+
+		for (auto MeshChild : MeshChildren)
+		{
+			if (const auto MeshChildGeometry = Cast<UPrimitiveComponent>(MeshChild))
+			{
+				MeshChildGeometry->SetOwnerNoSee(HideMesh);
+			}
+		}/**/
 }
 
 void ASBBaseCharacter::OnHealthChanged(float Health, float HealthDelta)
@@ -120,8 +160,6 @@ float ASBBaseCharacter::GetMovementDirection() const
 
 void ASBBaseCharacter::OnDeath()
 {
-	UE_LOG(LogBaseCharacter, Display, TEXT("Player %s Sdox"), *GetName());
-
 	//PlayAnimMontage(DeathAnimMontage);
 
 	GetCharacterMovement()->DisableMovement();
@@ -143,7 +181,7 @@ void ASBBaseCharacter::OnGroundLanded(const FHitResult& Hit)
 	if (FallVelocityZ < LandedDamageVelocity.X) return;
 
 	const auto FinalDamage = FMath::GetMappedRangeValueClamped(LandedDamageVelocity, LandedDamage, FallVelocityZ);
-	UE_LOG(LogBaseCharacter, Display, TEXT("FinalDamage: %f"), FinalDamage);
+	//UE_LOG(LogBaseCharacter, Display, TEXT("FinalDamage: %f"), FinalDamage);
 
 	TakeDamage(FinalDamage, FDamageEvent{}, nullptr, nullptr);
 

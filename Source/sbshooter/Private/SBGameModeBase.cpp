@@ -7,8 +7,12 @@
 #include "UI/SBGameHUD.h"
 #include "AIController.h"
 #include "Player/SBPlayerState.h"
+#include "SBUtils.h"
+#include "Components/SBRespawnComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSBGameModeBase, All, All);
+
+const static int32 MinRoundTimeForRespawn = 10;
 
 ASBGameModeBase::ASBGameModeBase()
 {
@@ -83,6 +87,7 @@ void ASBGameModeBase::GameTimerUpdate()
 void ASBGameModeBase::ResetPlayers()
 {
 	if (!GetWorld()) return;
+
 	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
 	{
 		ResetOnePlayer(It->Get());
@@ -96,7 +101,7 @@ void ASBGameModeBase::ResetOnePlayer(AController* Controller)
 		Controller->GetPawn()->Reset();
 	}
 	RestartPlayer(Controller);
-	//SetPlayerColor(Controller);
+	SetPlayerColor(Controller);
 }
 
 void ASBGameModeBase::CreateTeamsInfo()
@@ -157,7 +162,7 @@ const auto KillerPlayerState = KillerController ? Cast <ASBPlayerState>(KillerCo
 	{
 		VictimPlayerState->AddDeath();
 	}
-	//StartRespawn(VictimController);
+	StartRespawn(VictimController);
 }
 
 void ASBGameModeBase::LogPlayerInfo()
@@ -174,4 +179,20 @@ void ASBGameModeBase::LogPlayerInfo()
 		PlayerState->LogInfo();
 	}
 
+}
+
+void ASBGameModeBase::StartRespawn(AController* Controller)
+{
+	const auto RespawnAvailable = RoundCountDown > MinRoundTimeForRespawn + GameData.RespawnTime;
+	if (!RespawnAvailable) return;
+
+	const auto RespawnComponent = SBUtils::GetSBPlayerComponent<USBRespawnComponent>(Controller);
+	if (!RespawnComponent) return;
+
+	RespawnComponent->Respawn(GameData.RespawnTime);
+}
+
+void ASBGameModeBase::RespawnRequest(AController* Controller)
+{
+	ResetOnePlayer(Controller);
 }

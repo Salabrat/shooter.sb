@@ -28,8 +28,6 @@ int32 USBGameDataWidget::GetRoundSecodsRemaining() const
 	return GameMode ? GameMode->GetRoundSecodsRemaining() : 0;
 }
 
-
-
 ASBGameModeBase* USBGameDataWidget::GetSBGameMode() const
 {
 	return GetWorld() ? Cast<ASBGameModeBase>(GetWorld()->GetAuthGameMode()) : nullptr;

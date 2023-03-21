@@ -4,6 +4,7 @@
 #include "AI/SBAIController.h"
 #include "AI/SBAICharacter.h"
 #include "Components/SBAIPerceptionComponent.h"
+#include "Components/SBRespawnComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 ASBAIController::ASBAIController()
@@ -11,8 +12,7 @@ ASBAIController::ASBAIController()
 	SBAIPerceptionComponent = CreateDefaultSubobject<USBAIPerceptionComponent>("SBAIPerceptionComponent");
 	SetPerceptionComponent(*SBAIPerceptionComponent);
 
-	/*RespawnComponent = CreateDefaultSubobject<USBRespawnComponent>("RespawnComponent");
-*/
+	RespawnComponent = CreateDefaultSubobject<USBRespawnComponent>("RespawnComponent");
 	bWantsPlayerState = true;
 }
 

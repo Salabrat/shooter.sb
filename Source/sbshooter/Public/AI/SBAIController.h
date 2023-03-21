@@ -7,6 +7,7 @@
 #include "SBAIController.generated.h"
 
 class USBAIPerceptionComponent;
+class USBRespawnComponent;
 
 UCLASS()
 class SBSHOOTER_API ASBAIController : public AAIController
@@ -17,9 +18,11 @@ public:
 	ASBAIController();
 
 protected:
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 		USBAIPerceptionComponent* SBAIPerceptionComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+		USBRespawnComponent* RespawnComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 		FName FocusOnKeyName = "EnemyActor";

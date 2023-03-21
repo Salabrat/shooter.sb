@@ -6,6 +6,7 @@
 #include "Player/SBPlayerController.h"
 #include "UI/SBGameHUD.h"
 #include "AIController.h"
+#include "Player/SBPlayerState.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSBGameModeBase, All, All);
 
@@ -14,6 +15,7 @@ ASBGameModeBase::ASBGameModeBase()
 	DefaultPawnClass = ASBBaseCharacter::StaticClass();
 	PlayerControllerClass = ASBPlayerController::StaticClass();
 	HUDClass = ASBGameHUD::StaticClass();
+	PlayerStateClass = ASBPlayerState::StaticClass();
 }
 
 void ASBGameModeBase::StartPlay()
@@ -21,7 +23,8 @@ void ASBGameModeBase::StartPlay()
 	Super::StartPlay();
 
 	SpawnBots();
-	//CreateTeamsInfo();
+	CreateTeamsInfo();
+
 	CurrentRound = 1;
 	StartRound();
 }
@@ -95,4 +98,46 @@ void ASBGameModeBase::ResetOnePlayer(AController* Controller)
 	//SetPlayerColor(Controller);
 }
 
+void ASBGameModeBase::CreateTeamsInfo()
+{
+	if (!GetWorld()) return;
 
+	int32 TeamID = 1;
+	for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
+	{
+		const auto Controller = It->Get();
+		if (!Controller)continue;
+
+		const auto PlayerState = Cast<ASBPlayerState>(Controller->PlayerState);
+		if (!PlayerState) continue;
+
+		PlayerState->SetTeamID(TeamID);
+		PlayerState->SetTeamColor(DetermineColorByTeamID(TeamID));
+		SetPlayerColor(Controller);
+
+		TeamID = TeamID == 1 ? 2 : 1;
+	}
+}
+
+FLinearColor ASBGameModeBase::DetermineColorByTeamID(int32 TeamID) const
+{
+	if (TeamID - 1 < GameData.TeamColors.Num())
+	{
+		return GameData.TeamColors[TeamID - 1];
+	}
+	UE_LOG(LogSBGameModeBase, Warning, TEXT("NoColorForTeam ID: %i, set to default: %s"), TeamID, *GameData.DefaultTeamColor.ToString());
+	return GameData.DefaultTeamColor;
+}
+
+void ASBGameModeBase::SetPlayerColor(AController* Controller)
+{
+	if (!Controller) return;
+
+	const auto Character = Cast<ASBBaseCharacter>(Controller->GetPawn());
+	if (!Character) return;
+
+	const auto PlayerState = Cast<ASBPlayerState>(Controller->PlayerState);
+	if (!PlayerState) return;
+
+	Character->SetPlayerColor(PlayerState->GetTeamColor());
+}

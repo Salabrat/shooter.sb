@@ -148,3 +148,17 @@ void ASBBaseCharacter::OnGroundLanded(const FHitResult& Hit)
 	TakeDamage(FinalDamage, FDamageEvent{}, nullptr, nullptr);
 
 }
+
+void ASBBaseCharacter::SetPlayerColor(const FLinearColor& Color)
+{
+	if (!Controller) return;
+
+	const auto MaterialInst = GetMesh()->CreateAndSetMaterialInstanceDynamic(0);
+	if (!MaterialInst) return;
+
+
+	MaterialInst->SetVectorParameterValue(MaterialColorName, Color);
+	/*const auto PlayerState = Cast<ASBPlayerState>(Controller->PlayerState);
+	if (!PlayerState) return;
+	Character->SetPlayerColor(PlayerState->GetTeamColor());*/
+}

@@ -4,12 +4,14 @@
 #include "UI/SBGameHUD.h"
 #include "Engine/Canvas.h"
 #include "Blueprint/UserWidget.h"
+#include "SBGameModeBase.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogSBGameHUD, All, All);
 
 void ASBGameHUD::DrawHUD()
 {
 	Super::DrawHUD();
-	DrawCrossHair();
+	//DrawCrossHair();
 }
 
 void ASBGameHUD::BeginPlay()
@@ -20,6 +22,21 @@ void ASBGameHUD::BeginPlay()
 	{
 		PlayerHUDWidget->AddToViewport();
 	}
+
+	if (GetWorld())
+	{
+		const auto GameMode = Cast<ASBGameModeBase>(GetWorld()->GetAuthGameMode());
+		if (GameMode)
+		{
+			GameMode->OnMatchStateChanged.AddUObject(this, &ASBGameHUD::OnMatchStateChanged);
+		}
+	}
+}
+
+void ASBGameHUD::OnMatchStateChanged(ESBMatchState State)
+{
+	UE_LOG(LogSBGameHUD, Display, TEXT("Match state changed: %s"), *UEnum::GetValueAsString(State));
+
 }
 
 void ASBGameHUD::DrawCrossHair()
@@ -33,3 +50,4 @@ void ASBGameHUD::DrawCrossHair()
 	DrawLine(Center.Min - HalfLineSize, Center.Max, Center.Min + HalfLineSize, Center.Max, LineColor, LineThickness);
 	DrawLine(Center.Min, Center.Max - HalfLineSize, Center.Min, Center.Max + HalfLineSize, LineColor, LineThickness);
 }
+

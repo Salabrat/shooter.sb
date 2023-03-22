@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "SBCoreTypes.h"
 #include "SBGameHUD.generated.h"
 
 UCLASS()
@@ -21,4 +22,5 @@ protected:
 
 private:
 	void DrawCrossHair();
+	void OnMatchStateChanged(ESBMatchState State);
 };

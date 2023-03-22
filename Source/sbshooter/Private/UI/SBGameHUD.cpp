@@ -20,7 +20,7 @@ void ASBGameHUD::BeginPlay()
 
 	GameWidgets.Add(ESBMatchState::InProgress, CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass));
 	GameWidgets.Add(ESBMatchState::Pause, CreateWidget<UUserWidget>(GetWorld(), PauseWidgetClass));
-	//GameWidgets.Add(ESBMatchState::GameOver, CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass));
+	GameWidgets.Add(ESBMatchState::GameOver, CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass));
 
 	for (auto GameWidgetPair : GameWidgets)
 	{

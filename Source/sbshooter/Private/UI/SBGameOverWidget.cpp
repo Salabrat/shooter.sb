@@ -7,9 +7,12 @@
 #include "UI/SBPlayerStatRowWidget.h"
 #include "Components/VerticalBox.h"
 #include "SBUtils.h"
+#include "Components/Button.h"
+#include "Kismet/GameplayStatics.h"
 
-bool USBGameOverWidget::Initialize()
+void USBGameOverWidget::NativeOnInitialized()
 {
+    Super::NativeOnInitialized();
     if (GetWorld())
     {
         const auto GameMode = Cast<ASBGameModeBase>(GetWorld()->GetAuthGameMode());
@@ -18,7 +21,11 @@ bool USBGameOverWidget::Initialize()
             GameMode->OnMatchStateChanged.AddUObject(this, &USBGameOverWidget::OnMatchStateChanged);
         }
     }
-    return Super::Initialize();
+
+    if (ResetLevelButton)
+    {
+        ResetLevelButton->OnClicked.AddDynamic(this, &USBGameOverWidget::OnResetLevel);
+    }
 }
 
 void USBGameOverWidget::OnMatchStateChanged(ESBMatchState State)
@@ -55,4 +62,10 @@ void USBGameOverWidget::UpdatePlayersStat()
 
         PlayerStatBox->AddChild(PlayerStatRowWidget);
     }
+}
+
+void USBGameOverWidget::OnResetLevel()
+{
+    const auto CurrentLevelName = UGameplayStatics::GetCurrentLevelName(this);
+    UGameplayStatics::OpenLevel(this, FName(CurrentLevelName));
 }

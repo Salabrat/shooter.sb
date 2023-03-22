@@ -12,13 +12,12 @@ UCLASS()
 class SBSHOOTER_API USBPauseWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
-public:
-	virtual bool Initialize() override;
 
 protected:
 	UPROPERTY(meta = (BindWidget))
 		UButton* ClearPauseButton;
+	 
+	virtual void NativeOnInitialized() override;
 
 private:
 	UFUNCTION()

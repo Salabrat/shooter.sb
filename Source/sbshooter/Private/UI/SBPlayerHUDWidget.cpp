@@ -6,23 +6,15 @@
 #include "Components/SBWeaponComponent.h"
 #include "SBUtils.h"
 
-bool USBPlayerHUDWidget::Initialize()
+void USBPlayerHUDWidget::NativeOnInitialized()
 {
+	Super::NativeOnInitialized();
+
 	if (GetOwningPlayer())
 	{	
 		GetOwningPlayer()->GetOnNewPawnNotifier().AddUObject(this, &USBPlayerHUDWidget::OnNewPawn);
 		OnNewPawn(GetOwningPlayerPawn());
-		//test
-		OnNewPawn(GetOwningPlayerPawn());
-		OnNewPawn(GetOwningPlayerPawn());
 	}
-	const auto HealthComponent = SBUtils::GetSBPlayerComponent<USBHealthComponent>(GetOwningPlayerPawn());
-	if (HealthComponent)
-	{
-		HealthComponent->OnHealthChanged.AddUObject(this, &USBPlayerHUDWidget::OnHealthChanged);
-
-	}
-	return Super::Initialize();
 }
 
 void USBPlayerHUDWidget::OnNewPawn(APawn* NewPawn)

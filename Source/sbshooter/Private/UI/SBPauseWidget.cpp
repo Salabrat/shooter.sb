@@ -5,16 +5,14 @@
 #include "GameFramework/GameModeBase.h"
 #include "Components/Button.h"
 
-bool USBPauseWidget::Initialize()
+void USBPauseWidget::NativeOnInitialized()
 {
-    const auto InitStatus = Super::Initialize();
+    Super::NativeOnInitialized();
 
     if (ClearPauseButton)
     {
         ClearPauseButton->OnClicked.AddDynamic(this, &USBPauseWidget::OnClearPause);
     }
-
-    return InitStatus;
 }
 
 void USBPauseWidget::OnClearPause()

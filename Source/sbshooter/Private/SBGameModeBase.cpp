@@ -12,8 +12,6 @@
 #include "EngineUtils.h"
 #include "SBGameInstance.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogSBGameModeBase, All, All);
-
 const static int32 MinRoundTimeForRespawn = 10;
 
 ASBGameModeBase::ASBGameModeBase()
@@ -27,8 +25,6 @@ ASBGameModeBase::ASBGameModeBase()
 void ASBGameModeBase::StartPlay()
 {
 	Super::StartPlay();
-
-	UE_LOG(LogSBGameModeBase, Display, TEXT("%s"), *GetWorld()->GetGameInstance<USBGameInstance>()->TestString);
 
 	SpawnBots();
 	CreateTeamsInfo();
@@ -70,7 +66,7 @@ void ASBGameModeBase::StartRound()
 void ASBGameModeBase::GameTimerUpdate()
 {
 
-	UE_LOG(LogSBGameModeBase, Display, TEXT("Time: %i / Round: %i/%i"), RoundCountDown, CurrentRound, GameData.RoundsNum);
+	//UE_LOG(LogSBGameModeBase, Display, TEXT("Time: %i / Round: %i/%i"), RoundCountDown, CurrentRound, GameData.RoundsNum);
 
 	if (--RoundCountDown == 0)
 	{
@@ -137,7 +133,7 @@ FLinearColor ASBGameModeBase::DetermineColorByTeamID(int32 TeamID) const
 	{
 		return GameData.TeamColors[TeamID - 1];
 	}
-	UE_LOG(LogSBGameModeBase, Warning, TEXT("NoColorForTeam ID: %i, set to default: %s"), TeamID, *GameData.DefaultTeamColor.ToString());
+	//UE_LOG(LogSBGameModeBase, Warning, TEXT("NoColorForTeam ID: %i, set to default: %s"), TeamID, *GameData.DefaultTeamColor.ToString());
 	return GameData.DefaultTeamColor;
 }
 
@@ -205,7 +201,7 @@ void ASBGameModeBase::RespawnRequest(AController* Controller)
 
 void ASBGameModeBase::GameOver()
 {
-	UE_LOG(LogSBGameModeBase, Display, TEXT("--------------GameOVER--------------"));
+	//UE_LOG(LogSBGameModeBase, Display, TEXT("--------------GameOVER--------------"));
 	LogPlayerInfo();
 
 	for (auto Pawn : TActorRange<APawn>(GetWorld()))

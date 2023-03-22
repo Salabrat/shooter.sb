@@ -10,5 +10,4 @@ void ASBMenuPlayerController::BeginPlay()
 
     SetInputMode(FInputModeUIOnly());
     bShowMouseCursor = true;
-    GetWorld()->GetGameInstance<USBGameInstance>()->TestString = "Menu level says hello";
 }

@@ -10,6 +10,7 @@
 #include "SBUtils.h"
 #include "Components/SBRespawnComponent.h"
 #include "EngineUtils.h"
+#include "SBGameInstance.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSBGameModeBase, All, All);
 
@@ -26,6 +27,8 @@ ASBGameModeBase::ASBGameModeBase()
 void ASBGameModeBase::StartPlay()
 {
 	Super::StartPlay();
+
+	UE_LOG(LogSBGameModeBase, Display, TEXT("%s"), *GetWorld()->GetGameInstance<USBGameInstance>()->TestString);
 
 	SpawnBots();
 	CreateTeamsInfo();

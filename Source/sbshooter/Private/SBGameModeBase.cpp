@@ -222,3 +222,24 @@ void ASBGameModeBase::SetMatchState(ESBMatchState State)
 	MatchState = State;
 	OnMatchStateChanged.Broadcast(MatchState);
 }
+
+bool ASBGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate)
+{
+	const auto PauseSet = Super::SetPause(PC, CanUnpauseDelegate);
+	if (PauseSet)
+	{
+		//StopAllFire();
+		SetMatchState(ESBMatchState::Pause);
+	}
+	return PauseSet;
+}
+
+bool ASBGameModeBase::ClearPause()
+{
+	const auto PauseCleared = Super::ClearPause();
+	if (PauseCleared)
+	{
+		SetMatchState(ESBMatchState::InProgress);
+	}
+	return PauseCleared;
+}

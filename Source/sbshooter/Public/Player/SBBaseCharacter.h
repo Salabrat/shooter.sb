@@ -59,6 +59,8 @@ protected:
 	virtual void OnDeath();
 	virtual void BeginPlay() override;	
 
+	virtual void OnHealthChanged(float Health, float HealthDelta);
+
 
 public:	
 	virtual void Tick(float DeltaTime) override;
@@ -81,10 +83,7 @@ private:
 	void MoveRight(float Amount);
 
 	void OnStartRunning();
-	void OnStopRunning();
-
-	void OnHealthChanged(float Health, float HealthDelta);
-	
+	void OnStopRunning();	
 	UFUNCTION()
 		void OnGroundLanded(const FHitResult& Hit);
 

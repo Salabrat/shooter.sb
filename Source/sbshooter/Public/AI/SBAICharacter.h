@@ -7,6 +7,7 @@
 #include "SBAICharacter.generated.h"
 
 class UBehaviorTree;
+class UWidgetComponent;
 
 UCLASS()
 class SBSHOOTER_API ASBAICharacter : public ASBBaseCharacter
@@ -20,7 +21,11 @@ public:
 		UBehaviorTree* UBehaviorTreeAsset;
 
 protected:
-	virtual void OnDeath() override;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
+		UWidgetComponent* HealthWidgetComponent;
 
+	virtual void BeginPlay() override;
+	virtual void OnDeath() override;
+	virtual void OnHealthChanged(float Health, float HealthDelta) override;
 
 };

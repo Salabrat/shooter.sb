@@ -34,8 +34,8 @@ ASBBaseCharacter::ASBBaseCharacter(const FObjectInitializer& ObjInit)
 
 	HealthComponent = CreateDefaultSubobject<USBHealthComponent>("HealthComponent");
 
-	HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
-	HealthTextComponent->SetupAttachment(GetRootComponent());
+//	HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
+//	HealthTextComponent->SetupAttachment(GetRootComponent());
 
 	WeaponComponent = CreateDefaultSubobject<USBWeaponComponent>("WeaponComponent");
 }
@@ -44,7 +44,7 @@ void ASBBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	check(HealthComponent);
-	check(HealthTextComponent);
+	//check(HealthTextComponent);
 	check(GetCharacterMovement());
 	check(GetMesh());
 
@@ -93,7 +93,7 @@ void ASBBaseCharacter::CheckCameraOverlap()
 
 void ASBBaseCharacter::OnHealthChanged(float Health, float HealthDelta)
 {
-	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
+//	HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
 }
 
 void ASBBaseCharacter::Tick(float DeltaTime)

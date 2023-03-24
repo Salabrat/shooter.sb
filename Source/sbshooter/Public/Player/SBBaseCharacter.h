@@ -9,7 +9,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 class USBHealthComponent;
-class UTextRenderComponent;
+//class UTextRenderComponent;
 class USBWeaponComponent;
 class USphereComponent;
 
@@ -32,9 +32,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 		USBHealthComponent* HealthComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-		UTextRenderComponent* HealthTextComponent;
-
+	/*UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+		UTextRenderComponent* HealthTextComponent;*/
+		
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 		USBWeaponComponent* WeaponComponent;
 

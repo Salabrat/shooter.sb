@@ -36,6 +36,12 @@ void ASBAICharacter::BeginPlay()
 	check(HealthWidgetComponent);
 }
 
+void ASBAICharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	UpdateHealthWidgetVisibility();
+}
+
 void ASBAICharacter::OnDeath()
 {
 	Super::OnDeath();
@@ -53,5 +59,18 @@ void ASBAICharacter::OnHealthChanged(float Health, float HealthDelta)
 	const auto HealthBarWidget = Cast<USBHealthBarWidget>(HealthWidgetComponent->GetUserWidgetObject());
 	if (!HealthBarWidget) return;
 	HealthBarWidget->SetHealthPercent(HealthComponent->GetHealthPercent());
+
+}
+
+void ASBAICharacter::UpdateHealthWidgetVisibility()
+{
+	if (!GetWorld() ||                              //
+		!GetWorld()->GetFirstPlayerController() ||  //
+		!GetWorld()->GetFirstPlayerController()->GetPawnOrSpectator())
+		return;
+
+	const auto PlayerLocation = GetWorld()->GetFirstPlayerController()->GetPawnOrSpectator()->GetActorLocation();
+	const auto Distance = FVector::Distance(PlayerLocation, GetActorLocation());
+	HealthWidgetComponent->SetVisibility(Distance < HealthVisibilityDistance, true);
 
 }

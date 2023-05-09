@@ -5,12 +5,6 @@
 #include "SBGameModeBase.h"
 #include "Player/SBPlayerState.h"
 
-int32 USBGameDataWidget::GetKillsNum() const
-{
-	const auto PlayerState = GetSBPlayerState();
-	return PlayerState ? PlayerState->GetKillsNum() : 0;
-}
-
 int32 USBGameDataWidget::GetCurrentRoundNum() const
 {
 	const auto GameMode = GetSBGameMode();

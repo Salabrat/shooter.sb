@@ -5,6 +5,8 @@
 #include "Components/SBHealthComponent.h"
 #include "Components/SBWeaponComponent.h"
 #include "SBUtils.h"
+#include "Components/ProgressBar.h"
+#include "Player/SBPlayerState.h"
 
 void USBPlayerHUDWidget::NativeOnInitialized()
 {
@@ -24,6 +26,7 @@ void USBPlayerHUDWidget::OnNewPawn(APawn* NewPawn)
 	{
 		HealthComponent->OnHealthChanged.AddUObject(this, &USBPlayerHUDWidget::OnHealthChanged);
 	}	
+	UpdateHealthBar();
 }
 
 void USBPlayerHUDWidget::OnHealthChanged(float Health, float HealthDelta)
@@ -32,6 +35,8 @@ void USBPlayerHUDWidget::OnHealthChanged(float Health, float HealthDelta)
 	{
 	OnTakeDamage();
 	}
+
+	UpdateHealthBar();
 }
 
 
@@ -69,6 +74,23 @@ bool USBPlayerHUDWidget::IsPlayerSpectating() const
 {
 	const auto Controller = GetOwningPlayer();
 	return Controller && Controller->GetStateName() == NAME_Spectating;
+}
+
+int32 USBPlayerHUDWidget::GetKillsNum() const
+{
+	const auto Controller = GetOwningPlayer();
+	if (!Controller) return 0;
+
+	const auto PlayerState = Cast<ASBPlayerState>(Controller->PlayerState);
+	return PlayerState ? PlayerState->GetKillsNum() : 0;
+}
+
+void USBPlayerHUDWidget::UpdateHealthBar()
+{
+	if (HealthProgressBar)
+	{
+		HealthProgressBar->SetFillColorAndOpacity(GetHealthPercent() > PercentColorThreshold ? GoodColor : BadColor);
+	}
 }
 
 USBWeaponComponent* USBPlayerHUDWidget::GetWeaponComponent() const

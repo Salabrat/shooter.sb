@@ -58,7 +58,7 @@ void USBGameOverWidget::UpdatePlayersStat()
         PlayerStatRowWidget->SetDeaths(SBUtils::TextFromInt(PlayerState->GetDeathsNum()));
         PlayerStatRowWidget->SetTeam(SBUtils::TextFromInt(PlayerState->GetTeamID()));
         PlayerStatRowWidget->SetPlayerIndicatorVisibility(Controller->IsPlayerController());
-       // PlayerStatRowWidget->SetTeamColor(PlayerState->GetTeamColor());
+        PlayerStatRowWidget->SetTeamColor(PlayerState->GetTeamColor());
 
         PlayerStatBox->AddChild(PlayerStatRowWidget);
     }

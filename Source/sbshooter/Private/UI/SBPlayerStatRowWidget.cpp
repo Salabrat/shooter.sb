@@ -34,3 +34,9 @@ void USBPlayerStatRowWidget::SetPlayerIndicatorVisibility(bool Visible)
     if (!PlayerIndicatorImage) return;
     PlayerIndicatorImage->SetVisibility(Visible ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 }
+
+void USBPlayerStatRowWidget::SetTeamColor(const FLinearColor& Color)
+{
+    if (!TeamImage) return;
+    TeamImage->SetColorAndOpacity(Color);
+}

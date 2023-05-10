@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "SBCoreTypes.h"
-#include "SBMenuWidget.generated.h"
+#include "SBMenuWidget.generated.h" 
 
 class UButton;
 class UHorizontalBox;

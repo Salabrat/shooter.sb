@@ -13,8 +13,8 @@ void USBLevelItemWidget::NativeOnInitialized()
     if (LevelSelectButton)
     {
         LevelSelectButton->OnClicked.AddDynamic(this, &USBLevelItemWidget::OnLevelItemClicked);
-     //   LevelSelectButton->OnHovered.AddDynamic(this, &USBLevelItemWidget::OnLevelItemHovered);
-      //  LevelSelectButton->OnUnhovered.AddDynamic(this, &USBLevelItemWidget::OnLevelItemUnhovered);
+        LevelSelectButton->OnHovered.AddDynamic(this, &USBLevelItemWidget::OnLevelItemHovered);
+        LevelSelectButton->OnUnhovered.AddDynamic(this, &USBLevelItemWidget::OnLevelItemUnhovered);
     }
 }
 
@@ -38,6 +38,7 @@ void USBLevelItemWidget::SetLevelData(const FLevelData& Data)
     }
 }
 
+//
 void USBLevelItemWidget::SetSelected(bool IsSelected)
 {
     if (LevelImage)
@@ -46,6 +47,7 @@ void USBLevelItemWidget::SetSelected(bool IsSelected)
     }
 }
 
+//
 void USBLevelItemWidget::OnLevelItemHovered()
 {
     if (FrameImage)
@@ -54,6 +56,7 @@ void USBLevelItemWidget::OnLevelItemHovered()
     }
 }
 
+//
 void USBLevelItemWidget::OnLevelItemUnhovered()
 {
     if (FrameImage)

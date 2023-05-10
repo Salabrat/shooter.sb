@@ -39,6 +39,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 		int32 GetKillsNum() const;
 
+	UFUNCTION(BlueprintCallable, Category = "UI")
+		FString FormatBullets(int32 BulletsNum) const;
 
 protected:
 

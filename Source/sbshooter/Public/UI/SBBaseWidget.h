@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "SBBaseWidget.generated.h"
 
+class USoundCue;
+
 UCLASS()
 class SBSHOOTER_API USBBaseWidget : public UUserWidget
 {
@@ -18,6 +20,7 @@ protected:
     UPROPERTY(Transient, meta = (BindWidgetAnim))
         UWidgetAnimation* ShowAnimation;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+        USoundCue* OpenSound;
+
 };
-   // UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
-      //  USoundCue* OpenSound;

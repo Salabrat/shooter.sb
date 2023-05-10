@@ -4,10 +4,13 @@
 #include "UI/SBBaseWidget.h"
 //#include "Blueprint/UserWidget.h"
 //#include "SBBaseWidget.generated.h"
-//#include "Kismet/GameplayStatics.h
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
+
+
 
 void USBBaseWidget::Show()
 {
     PlayAnimation(ShowAnimation);
-    //UGameplayStatics::PlaySound2D(GetWorld(), OpenSound);
+    UGameplayStatics::PlaySound2D(GetWorld(), OpenSound);
 }

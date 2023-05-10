@@ -8,6 +8,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/HorizontalBox.h"
 #include "Menu/UI/SBLevelItemWidget.h"
+#include "Sound/SoundCue.h"
+
 
 DEFINE_LOG_CATEGORY_STATIC(LogSBMenuWidget, All, All);
 
@@ -81,6 +83,8 @@ void USBMenuWidget::OnStartGame()
 {
 //   if (!GetWorld()) return;
     PlayAnimation(HideAnimation);
+    UGameplayStatics::PlaySound2D(GetWorld(), StartGameSound);
+
     //const auto SBGameInstance = GetSBGameInstance();//GetWorld()->GetGameInstance<USBGameInstance>();
   //  if (!SBGameInstance) return;
 

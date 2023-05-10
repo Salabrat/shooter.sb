@@ -11,6 +11,7 @@ class UButton;
 class UHorizontalBox;
 class USBGameInstance;
 class USBLevelItemWidget;
+class USoundCue;
 
 UCLASS()
 class SBSHOOTER_API USBMenuWidget : public USBBaseWidget
@@ -32,6 +33,9 @@ protected:
 
 		UPROPERTY(Transient, meta = (BindWidgetAnim))
 			UWidgetAnimation* HideAnimation;
+
+		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+			USoundCue* StartGameSound;
 
 		virtual void NativeOnInitialized() override;
 		virtual void OnAnimationFinished_Implementation(const UWidgetAnimation* Animation) override;

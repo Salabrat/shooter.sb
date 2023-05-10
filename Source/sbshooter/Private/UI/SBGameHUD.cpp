@@ -3,7 +3,7 @@
 
 #include "UI/SBGameHUD.h"
 #include "Engine/Canvas.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/SBBaseWidget.h"
 #include "SBGameModeBase.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSBGameHUD, All, All);
@@ -18,9 +18,9 @@ void ASBGameHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GameWidgets.Add(ESBMatchState::InProgress, CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass));
-	GameWidgets.Add(ESBMatchState::Pause, CreateWidget<UUserWidget>(GetWorld(), PauseWidgetClass));
-	GameWidgets.Add(ESBMatchState::GameOver, CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass));
+	GameWidgets.Add(ESBMatchState::InProgress, CreateWidget<USBBaseWidget>(GetWorld(), PlayerHUDWidgetClass));
+	GameWidgets.Add(ESBMatchState::Pause, CreateWidget<USBBaseWidget>(GetWorld(), PauseWidgetClass));
+	GameWidgets.Add(ESBMatchState::GameOver, CreateWidget<USBBaseWidget>(GetWorld(), GameOverWidgetClass));
 
 	for (auto GameWidgetPair : GameWidgets)
 	{
@@ -56,7 +56,7 @@ void ASBGameHUD::OnMatchStateChanged(ESBMatchState State)
 	if (CurrentWidget)
 	{
 		CurrentWidget->SetVisibility(ESlateVisibility::Visible);
-		//CurrentWidget->Show();
+		CurrentWidget->Show();
 	}
 	UE_LOG(LogSBGameHUD, Display, TEXT("Match state changed: %s"), *UEnum::GetValueAsString(State));
 }

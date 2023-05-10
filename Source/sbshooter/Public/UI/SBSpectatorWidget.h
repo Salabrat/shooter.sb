@@ -1,4 +1,4 @@
-// Salabrat Game, All rights Reserved. SB4
+ // Salabrat Game, All rights Reserved. SB4
 
 #pragma once
 

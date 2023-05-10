@@ -7,6 +7,8 @@
 #include "SBCoreTypes.h"
 #include "SBGameHUD.generated.h"
 
+class USBBaseWidget;
+
 UCLASS()
 class SBSHOOTER_API ASBGameHUD : public AHUD
 {
@@ -29,10 +31,10 @@ protected:
 private:
 
 	UPROPERTY()
-		TMap<ESBMatchState, UUserWidget*> GameWidgets;
+		TMap<ESBMatchState, USBBaseWidget*> GameWidgets;
 
 	UPROPERTY()
-		UUserWidget* CurrentWidget = nullptr;
+		USBBaseWidget* CurrentWidget = nullptr;
 
 	void DrawCrossHair();
 	void OnMatchStateChanged(ESBMatchState State);

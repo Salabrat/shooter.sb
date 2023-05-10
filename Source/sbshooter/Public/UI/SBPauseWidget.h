@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/SBBaseWidget.h"
 #include "SBPauseWidget.generated.h"
 
 class UButton;
 
 UCLASS()
-class SBSHOOTER_API USBPauseWidget : public UUserWidget
+class SBSHOOTER_API USBPauseWidget : public USBBaseWidget
 {
 	GENERATED_BODY()
 

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/SBBaseWidget.h"
 #include "SBCoreTypes.h"
 #include "SBMenuWidget.generated.h" 
 
@@ -13,7 +13,7 @@ class USBGameInstance;
 class USBLevelItemWidget;
 
 UCLASS()
-class SBSHOOTER_API USBMenuWidget : public UUserWidget
+class SBSHOOTER_API USBMenuWidget : public USBBaseWidget
 {
 	GENERATED_BODY()
 

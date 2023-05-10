@@ -80,9 +80,9 @@ void USBMenuWidget::OnLevelSelected(const FLevelData& Data)
 void USBMenuWidget::OnStartGame()
 {
 //   if (!GetWorld()) return;
-
-    const auto SBGameInstance = GetSBGameInstance();//GetWorld()->GetGameInstance<USBGameInstance>();
-    if (!SBGameInstance) return;
+    PlayAnimation(HideAnimation);
+    //const auto SBGameInstance = GetSBGameInstance();//GetWorld()->GetGameInstance<USBGameInstance>();
+  //  if (!SBGameInstance) return;
 
    /* if(SBGameInstance->GetStartupLevelName().IsNone())
     {
@@ -92,9 +92,19 @@ void USBMenuWidget::OnStartGame()
 
     */
    // SBGameInstance->SetStartupLevelData(Data);
-   // PlayAnimation(HideAnimation);
+   // 
   //  const FName StartupLevelName = "sbMap";
-    UGameplayStatics::OpenLevel(this,SBGameInstance->GetStartupLevel().LevelName);
+   // UGameplayStatics::OpenLevel(this,SBGameInstance->GetStartupLevel().LevelName);
+}
+
+void USBMenuWidget::OnAnimationFinished_Implementation(const UWidgetAnimation* Animation)
+{
+    if (Animation != HideAnimation) return;
+
+    const auto SBGameInstance = GetSBGameInstance();
+    if (!SBGameInstance) return;
+
+    UGameplayStatics::OpenLevel(this, SBGameInstance->GetStartupLevel().LevelName);
 }
 
 void USBMenuWidget::OnQuitGame()

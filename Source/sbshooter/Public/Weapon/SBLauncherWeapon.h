@@ -7,6 +7,7 @@
 #include "SBLauncherWeapon.generated.h"
 
 class ASBProjectile;
+class USoundCue;
 
 UCLASS()
 class SBSHOOTER_API ASBLauncherWeapon : public ASBBaseWeapon
@@ -19,6 +20,9 @@ public:
 protected:
 		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 		TSubclassOf <ASBProjectile> ProjectileClass;
+
+		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+			USoundCue* NoAmmoSound;
 
 	virtual void MakeShot();
 };

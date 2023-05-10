@@ -12,6 +12,8 @@
 #include "GameFramework/Controller.h"
 #include "Components/SphereComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 ASBBaseCharacter::ASBBaseCharacter(const FObjectInitializer& ObjInit)
 	: Super(ObjInit.SetDefaultSubobjectClass<USBCharacterMovementComponent>(ASBBaseCharacter::CharacterMovementComponentName))
@@ -173,6 +175,8 @@ void ASBBaseCharacter::OnDeath()
 
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetMesh()->SetSimulatePhysics(true);
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), DeathSound, GetActorLocation());
 }
 
 void ASBBaseCharacter::OnGroundLanded(const FHitResult& Hit)

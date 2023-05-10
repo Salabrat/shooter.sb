@@ -3,7 +3,8 @@
 
 #include "Weapon/SBLauncherWeapon.h"
 #include "Weapon/SBProjectile.h"
-//#include "Kismet/GameplayStatics.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 void ASBLauncherWeapon::StartFire()
 {
@@ -12,7 +13,13 @@ void ASBLauncherWeapon::StartFire()
 
 void ASBLauncherWeapon::MakeShot()
 {
-	if (!GetWorld() || IsAmmoEmpty()) return;
+	if (!GetWorld()) return;
+
+	if (IsAmmoEmpty())
+	{
+		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), NoAmmoSound, GetActorLocation());
+		return;
+	}
 
 	FVector TraceStart, TraceEnd;
 	if (!GetTraceData(TraceStart, TraceEnd)) return;
@@ -34,5 +41,8 @@ void ASBLauncherWeapon::MakeShot()
 	//UGameplayStatics::FinishSpawningActor(Projectile, SpawnTransform);
 	DecreaseAmmo();
 	SpawnMuzzleFX();
+
+	UGameplayStatics::SpawnSoundAttached(FireSound, WeaponMesh, MuzzleSocketName);
+
 }
  

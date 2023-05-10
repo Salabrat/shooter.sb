@@ -9,6 +9,8 @@
 class USBWeaponFXComponent;
 class UNiagaraComponent;
 class UNiagaraSystem;
+class UAudioComponent;
+class USoundCue;
 
 UCLASS()
 class SBSHOOTER_API ASBRiffleWeapon : public ASBBaseWeapon
@@ -40,14 +42,21 @@ protected:
 		UPROPERTY(VisibleAnywhere, Category = "VFX")
 			USBWeaponFXComponent* WeaponFXComponent;
 
+		UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+			USoundCue* NoAmmoSound;
+
 		virtual	void BeginPlay() override;
 		virtual	void MakeShot();
 		virtual bool GetTraceData(FVector& TraceStart, FVector& TraceEnd) const override;
 
 private:
 	FTimerHandle ShotTimerHandle;
-
+	
+	UPROPERTY()
 	UNiagaraComponent* MuzzleFXComponent;
+
+	UPROPERTY()
+	UAudioComponent* FireAudioComponent;
 
 	void MakeDamage(const FHitResult& HitResult);
 	void InitMuzzleFX();

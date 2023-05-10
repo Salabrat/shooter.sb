@@ -7,6 +7,9 @@
 #include "Weapon/Components/SBWeaponFXComponent.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/AudioComponent.h"
 
 ASBRiffleWeapon::ASBRiffleWeapon()
 {
@@ -36,9 +39,11 @@ void ASBRiffleWeapon::StopFire()
 void ASBRiffleWeapon::MakeShot()
 {
 	//UE_LOG(LogTemp, Display, TEXT("MAkeShot"));
-	if (!GetWorld() || IsAmmoEmpty()) 
+	if (!GetWorld()) return;
+
+	if (IsAmmoEmpty())
 	{
-		StopFire();
+		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), NoAmmoSound, GetActorLocation());
 		return;
 	}
 
@@ -61,6 +66,9 @@ void ASBRiffleWeapon::MakeShot()
 	}
 	SpawnTraceFX(GetMuzzleWorldLocation(), TraceFXEnd);
 	DecreaseAmmo();
+
+	UGameplayStatics::SpawnSoundAttached(FireSound, WeaponMesh, MuzzleSocketName);
+
 }
 
 bool ASBRiffleWeapon::GetTraceData(FVector& TraceStart, FVector& TraceEnd) const
@@ -90,6 +98,12 @@ void ASBRiffleWeapon::InitMuzzleFX()
 	{
 		MuzzleFXComponent = SpawnMuzzleFX();
 	}
+
+	if (!FireAudioComponent)
+	{
+		FireAudioComponent = UGameplayStatics::SpawnSoundAttached(FireSound, WeaponMesh, MuzzleSocketName);
+	}
+
 	SetMuzzleFXVisibility(true);
 }
 
@@ -99,6 +113,11 @@ void ASBRiffleWeapon::SetMuzzleFXVisibility(bool Visible)
 	{
 		MuzzleFXComponent->SetPaused(!Visible);
 		MuzzleFXComponent->SetVisibility(Visible, true);
+	}
+
+	if (FireAudioComponent)
+	{
+		FireAudioComponent->SetPaused(!Visible);
 	}
 }
 

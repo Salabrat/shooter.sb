@@ -12,6 +12,7 @@ class USBHealthComponent;
 //class UTextRenderComponent;
 class USBWeaponComponent;
 class USphereComponent;
+class USoundCue;
 
 UCLASS()
 class SBSHOOTER_API ASBBaseCharacter : public ACharacter
@@ -55,6 +56,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 		USphereComponent* CameraCollisionComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+		USoundCue* DeathSound;
 
 	virtual void OnDeath();
 	virtual void BeginPlay() override;	

@@ -7,6 +7,8 @@
 #include "SBCoreTypes.h"
 #include "SBGameInstance.generated.h"
 
+class USoundClass;
+
 UCLASS()
 class SBSHOOTER_API USBGameInstance : public UGameInstance
 {
@@ -20,7 +22,7 @@ public:
 
     FName GetMenuLevelName() const { return MenuLevelName; }
 
-  //  void ToggleVolume();
+  void ToggleVolume();
 
 protected:
     UPROPERTY(EditDefaultsOnly, Category = "Game", meta = (ToolTip = "Level names must be unique!"))
@@ -29,6 +31,8 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "Game")
         FName MenuLevelName = NAME_None;
 
+    UPROPERTY(EditDefaultsOnly, Category = "Sound")
+        USoundClass* MasterSoundClass;
 private:
     FLevelData StartupLevel;
 };

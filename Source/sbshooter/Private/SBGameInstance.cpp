@@ -2,4 +2,9 @@
 
 
 #include "SBGameInstance.h"
+#include "Sound/SBSoundFuncLib.h"
 
+void USBGameInstance::ToggleVolume()
+{
+    USBSoundFuncLib::ToggleSoundClassVolume(MasterSoundClass);
+}
